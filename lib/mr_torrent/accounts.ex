@@ -7,6 +7,7 @@ defmodule MrTorrent.Accounts do
   alias MrTorrent.Repo
 
   alias MrTorrent.Accounts.User
+  alias MrTorrent.Accounts.UserSession
 
   @doc """
   Returns the list of users.
@@ -87,5 +88,63 @@ defmodule MrTorrent.Accounts do
   """
   def delete_user(%User{} = user) do
     Repo.delete(user)
+  end
+
+  alias MrTorrent.Accounts.UserSession
+
+  @doc """
+  Returns the list of user_sessions.
+
+  ## Examples
+
+      iex> list_user_sessions()
+      [%UserSession{}, ...]
+
+  """
+  def list_user_sessions do
+    Repo.all(UserSession)
+  end
+
+  @doc """
+  Gets a single user_session.
+
+  Raises `Ecto.NoResultsError` if the User session does not exist.
+
+  ## Examples
+
+      iex> get_user_session!(123)
+      %UserSession{}
+
+      iex> get_user_session!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_user_session!(id), do: Repo.get!(UserSession, id)
+
+  @doc """
+  Creates a user_session.
+
+  ## Examples
+
+      iex> create_user_session(%{field: value})
+      {:ok, %UserSession{}}
+
+      iex> create_user_session(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_user_session(user) do
+    {token, user_session} = UserSession.generate_token(user)
+    Repo.insert!(user_session)
+    token
+  end
+
+  def get_user_by_session_token(token) do
+    {:ok, query} = UserSession.verify_token_query(token)
+    Repo.one(query)
+  end
+
+  def delete_user_session(%UserSession{} = user_session) do
+    Repo.delete(user_session)
   end
 end
