@@ -2,8 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :mr_torrent, MrTorrent.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "mrtorrent",
+  password: "mrt0rr3n7",
   database: "mr_torrent_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
