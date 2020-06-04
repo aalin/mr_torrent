@@ -1,0 +1,5 @@
+<h1>Upload torrent</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.torrent_path(@conn, :create)) %>
+
+<span><%= link "Back", to: Routes.torrent_path(@conn, :index) %></span>

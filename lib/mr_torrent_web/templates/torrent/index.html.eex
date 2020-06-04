@@ -1,0 +1,21 @@
+<h1>Listing Torrents</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Total size</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+  <%= for torrent <- @torrents do %>
+      <tr>
+        <td><%= link torrent.name, to: Routes.torrent_path(@conn, :show, torrent) %></td>
+      <td>N/A</td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Torrent", to: Routes.torrent_path(@conn, :new) %></span>

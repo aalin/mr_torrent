@@ -6,6 +6,7 @@ config :mr_torrent, MrTorrent.Repo,
   password: "mrt0rr3n7",
   database: "mr_torrent_dev",
   hostname: "localhost",
+  port: 5432,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 

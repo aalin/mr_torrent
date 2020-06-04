@@ -1,0 +1,19 @@
+<h1><%= @torrent.name %></h1>
+
+<ul>
+  <li>
+    <strong>Name:</strong>
+    <%= @torrent.name %>
+  </li>
+
+  <li>
+    <strong>Files:</strong>
+    <ul>
+      <%= for %{"name" => name, "length" => length} <- @torrent.files do %>
+        <li><%= name %> (<%= length %>)</li>
+      <% end %>
+    </ul>
+  </li>
+</ul>
+
+<span><%= link "Back", to: Routes.torrent_path(@conn, :index) %></span>

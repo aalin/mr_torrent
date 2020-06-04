@@ -1,0 +1,8 @@
+<%= form_for @conn, @action, [multipart: true], fn f -> %>
+  <%= label f, :file %>
+  <%= file_input f, :file %>
+
+  <div>
+    <%= submit "Upload" %>
+  </div>
+<% end %>

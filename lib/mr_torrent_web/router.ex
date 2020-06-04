@@ -33,6 +33,11 @@ defmodule MrTorrentWeb.Router do
 
   scope "/", MrTorrentWeb do
     pipe_through [:browser, :require_authenticated_user]
+
+    get "/torrents", TorrentController, :index
+    get "/torrents/new", TorrentController, :new
+    post "/torrents", TorrentController, :create
+    get "/torrents/:id", TorrentController, :show
   end
 
   scope "/", MrTorrentWeb do
