@@ -4,7 +4,7 @@ defmodule MrTorrent.Repo.Migrations.CreateTorrents do
   def change do
     create table(:torrents) do
       add :name, :string
-      add :slug, :string
+      add :slug, :citext
 
       add :files, {:array, :map}
       add :piece_length, :integer

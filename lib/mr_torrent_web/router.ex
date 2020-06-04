@@ -37,7 +37,8 @@ defmodule MrTorrentWeb.Router do
     get "/torrents", TorrentController, :index
     get "/torrents/new", TorrentController, :new
     post "/torrents", TorrentController, :create
-    get "/torrents/:id", TorrentController, :show
+    get "/torrents/:slug", TorrentController, :show
+    get "/torrents/download/:slug", TorrentController, :download
   end
 
   scope "/", MrTorrentWeb do

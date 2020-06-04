@@ -13,7 +13,7 @@ defmodule MrTorrentWeb.TorrentController do
     render(conn, "new.html")
   end
 
-  def create(conn, %{"torrent" => %{"file" => file}}) do
+  def create(conn, %{"file" => file}) do
     case Torrents.create_torrent(file, conn.assigns.current_user) do
       {:ok, torrent} ->
         conn
@@ -25,13 +25,21 @@ defmodule MrTorrentWeb.TorrentController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    torrent = Torrents.get_torrent!(id)
-    render(conn, "show.html", torrent: torrent)
+  def show(conn, %{"slug" => slug}) do
+    torrent = Torrents.get_torrent_by_slug!(slug)
+    user = MrTorrent.Accounts.get_user!(torrent.user_id)
+    render(conn, "show.html", torrent: torrent, user: user)
   end
 
-  def delete(conn, %{"id" => id}) do
-    torrent = Torrents.get_torrent!(id)
+  def download(conn, %{"slug" => slug}) do
+    torrent = Torrents.get_torrent_by_slug!(slug)
+    torrent_file = Torrent.generate_torrent_file(torrent)
+
+    send_download(conn, {:binary, torrent_file}, "#{torrent.name}.torrent")
+  end
+
+  def delete(conn, %{"slug" => slug}) do
+    torrent = Torrents.get_torrent_by_slug!(slug)
     {:ok, _torrent} = Torrents.delete_torrent(torrent)
 
     conn

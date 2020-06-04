@@ -6,11 +6,15 @@
     <%= @torrent.name %>
   </li>
 
+  <p>Uploaded by <%= @user.username %></p>
+
+  <p><a href="<%= Routes.torrent_path(@conn, :download, @torrent) %>">DOWNLOAD</a></p>
+
   <li>
     <strong>Files:</strong>
     <ul>
-      <%= for %{"name" => name, "length" => length} <- @torrent.files do %>
-        <li><%= name %> (<%= length %>)</li>
+      <%= for %{"path" => path, "length" => length} <- @torrent.files do %>
+        <li><%= path %> (<%= length %>)</li>
       <% end %>
     </ul>
   </li>

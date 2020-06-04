@@ -18,4 +18,8 @@ defmodule MrTorrent.Torrents do
   def delete_torrent(%Torrent{} = torrent) do
     Repo.delete(torrent)
   end
+
+  def generate_torrent_for_user(%Torrent{} = torrent, user) do
+    announce_url = "http://localhost:4000/announce/"
+  end
 end

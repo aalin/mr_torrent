@@ -1,6 +1,9 @@
 defmodule MrTorrent.Torrents.Torrent do
+
   use Ecto.Schema
   import Ecto.Changeset
+
+  @derive {Phoenix.Param, key: :slug}
 
   schema "torrents" do
     field :name, :string
@@ -16,9 +19,17 @@ defmodule MrTorrent.Torrents.Torrent do
   end
 
   def changeset(torrent, attrs) do
+    IO.inspect(torrent)
+    IO.inspect(attrs)
     torrent
     |> cast(attrs, [:name, :files, :piece_length, :pieces, :user_id])
     |> validate_required([:name, :files, :piece_length, :pieces, :user_id])
+    |> unsafe_validate_unique(:info_hash, MrTorrent.Repo)
+    |> unique_constraint(:info_hash)
+    |> add_slug
+    |> validate_required([:slug])
+    |> unsafe_validate_unique(:slug, MrTorrent.Repo)
+    |> unique_constraint(:slug)
   end
 
   def from_file(path, user) do
@@ -28,7 +39,6 @@ defmodule MrTorrent.Torrents.Torrent do
     name = Path.basename(info["name"])
 
     data = %{
-      slug: info["name"],
       name: info["name"],
       files: parse_files(info),
       piece_length: info["piece length"],
@@ -39,8 +49,7 @@ defmodule MrTorrent.Torrents.Torrent do
     {:ok, encoded} = generate_torrent_file(data, "announce url", "comment")
     {:ok, _, info_hash} = Bencode.decode_with_info_hash(encoded)
 
-    %MrTorrent.Torrents.Torrent{}
-    |> changeset(data |> Map.put(:info_hash, info_hash))
+    changeset(%MrTorrent.Torrents.Torrent{info_hash: info_hash}, data)
   end
 
   def generate_torrent_file(data, announce_url, comment) do
@@ -67,7 +76,17 @@ defmodule MrTorrent.Torrents.Torrent do
     [parse_file(file)]
   end
 
-  defp parse_file(%{"length" => length, "name" => name}) do
-    %{length: length, name: name}
+  defp parse_file(%{"length" => length, "path" => path}) do
+    %{length: length, path: path}
+  end
+
+  defp add_slug(changeset) do
+    slug =
+      get_change(changeset, :name)
+      |> String.normalize(:nfd)
+      |> String.replace(~r/[^a-z0-9\(\)\[\]\._-]+/i, "-")
+
+    changeset
+    |> put_change(:slug, slug)
   end
 end

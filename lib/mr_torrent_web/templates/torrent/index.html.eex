@@ -12,7 +12,8 @@
   <%= for torrent <- @torrents do %>
       <tr>
         <td><%= link torrent.name, to: Routes.torrent_path(@conn, :show, torrent) %></td>
-      <td>N/A</td>
+        <td>N/A</td>
+        <td><a href="<%= Routes.torrent_path(@conn, :download, torrent) %>">DOWNLOAD</a></td>
     </tr>
 <% end %>
   </tbody>
