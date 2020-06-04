@@ -45,7 +45,8 @@ defmodule MrTorrent.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:bencode, "~> 0.3.2"}
+      {:bencode, "~> 0.3.2"},
+      {:bcrypt_elixir, "~> 2.2"}
     ]
   end
 

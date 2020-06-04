@@ -6,8 +6,8 @@ use Mix.Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :mr_torrent, MrTorrent.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "mrtorrent",
+  password: "mrt0rr3n7",
   database: "mr_torrent_test#{System.get_env("MIX_TEST_PARTITION")}",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
@@ -20,3 +20,5 @@ config :mr_torrent, MrTorrentWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+config :bcrypt_elixir, :log_rounds, 1
