@@ -9,6 +9,9 @@
   <body>
     <header>
       <h1>MrTorrent</h1>
+      <nav>
+        <%= render "_menu.html", assigns %>
+      </nav>
     </header>
     <main role="main" class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

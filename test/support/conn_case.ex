@@ -40,4 +40,17 @@ defmodule MrTorrentWeb.ConnCase do
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
+
+  def register_and_login_user(%{conn: conn}) do
+    user = MrTorrent.AccountsFixtures.user_fixture()
+    %{conn: login_user(conn, user), user: user}
+  end
+
+  def login_user(conn, user) do
+    token = MrTorrent.Accounts.create_user_session(user)
+
+    conn
+    |> Phoenix.ConnTest.init_test_session(%{})
+    |> Plug.Conn.put_session(:user_token, token)
+  end
 end

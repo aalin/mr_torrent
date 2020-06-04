@@ -11,6 +11,16 @@ defmodule MrTorrent.Accounts.User do
     timestamps()
   end
 
+  def valid_password?(%MrTorrent.Accounts.User{password_hash: password_hash}, password)
+  when is_binary(password_hash) and byte_size(password_hash) > 0 do
+    Bcrypt.verify_pass(password, password_hash)
+  end
+
+  def valid_password?(_, _) do
+    Bcrypt.no_user_verify() # avoid timing attacks
+    false
+  end
+
   def registration_changeset(user, attrs) do
     user
     |> cast(attrs, [:username, :email, :password])

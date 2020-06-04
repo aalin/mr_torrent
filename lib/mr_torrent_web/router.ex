@@ -1,12 +1,17 @@
 defmodule MrTorrentWeb.Router do
   use MrTorrentWeb, :router
 
+  #alias MrTorrentWeb.SessionController
+
+  import MrTorrentWeb.UserAuth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :fetch_current_user
   end
 
   pipeline :api do
@@ -17,6 +22,23 @@ defmodule MrTorrentWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+  end
+
+  scope "/", MrTorrentWeb do
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
+  end
+
+  scope "/", MrTorrentWeb do
+    pipe_through [:browser, :require_authenticated_user]
+  end
+
+  scope "/", MrTorrentWeb do
+    pipe_through [:browser]
+
+    get "/session", SessionController, :index
+    get "/session/new", SessionController, :new
+    post "/session", SessionController, :create
+    delete "/session", SessionController, :delete
   end
 
   # Other scopes may use custom stacks.

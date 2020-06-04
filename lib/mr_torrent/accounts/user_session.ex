@@ -11,6 +11,10 @@ defmodule MrTorrent.Accounts.UserSession do
     timestamps()
   end
 
+  def token_query(token) do
+    from MrTorrent.Accounts.UserSession, where: [token: ^token]
+  end
+
   def generate_token(user) do
     token = :crypto.strong_rand_bytes(@rand_size)
     {token, %MrTorrent.Accounts.UserSession{token: token, user_id: user.id}}
