@@ -20,7 +20,7 @@ defmodule MrTorrentWeb.UserAuth do
     assign(conn, :current_user, user)
   end
 
-  def redirect_if_user_is_authenticated(conn) do
+  def redirect_if_user_is_authenticated(conn, _opts) do
     if conn.assigns[:current_user] do
       conn
       |> redirect(to: "/")
@@ -30,7 +30,7 @@ defmodule MrTorrentWeb.UserAuth do
     end
   end
 
-  def require_authenticated_user(conn) do
+  def require_authenticated_user(conn, _opts) do
     if conn.assigns[:current_user] do
       conn
     else

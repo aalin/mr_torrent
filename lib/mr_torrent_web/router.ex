@@ -26,6 +26,9 @@ defmodule MrTorrentWeb.Router do
 
   scope "/", MrTorrentWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
+
+    get "/signup", SignupController, :new
+    post "/signup", SignupController, :create
   end
 
   scope "/", MrTorrentWeb do

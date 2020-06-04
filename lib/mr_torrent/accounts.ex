@@ -23,7 +23,7 @@ defmodule MrTorrent.Accounts do
 
   def register_user(attrs \\ %{}) do
     %User{}
-    |> User.registration_changeset(attrs)
+    |> User.signup_changeset(attrs)
     |> Repo.insert()
   end
 
@@ -31,6 +31,10 @@ defmodule MrTorrent.Accounts do
     user
     |> User.update_changeset(attrs)
     |> Repo.update()
+  end
+
+  def change_user_signup(%User{} = user, attrs \\ %{}) do
+    User.signup_changeset(user, attrs)
   end
 
   def delete_user(%User{} = user) do

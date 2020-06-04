@@ -4,5 +4,6 @@
   <li><%= link "Logout", to: Routes.session_path(@conn, :delete), method: :delete %></li>
 <% else %>
   <li><%= link "Login", to: Routes.session_path(@conn, :new) %></li>
+  <li><%= link "Sign up", to: Routes.signup_path(@conn, :new) %></li>
 <% end %>
 </ul>

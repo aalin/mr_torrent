@@ -21,7 +21,7 @@ defmodule MrTorrent.Accounts.User do
     false
   end
 
-  def registration_changeset(user, attrs) do
+  def signup_changeset(user, attrs) do
     user
     |> cast(attrs, [:username, :email, :password])
     |> validate_username()
