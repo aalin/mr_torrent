@@ -46,24 +46,41 @@ defmodule MrTorrent.Torrents.Torrent do
       user_id: user.id
     }
 
-    {:ok, encoded} = generate_torrent_file(data, "announce url", "comment")
+    {:ok, encoded} = generate_torrent_file(data, "", "")
+
     {:ok, _, info_hash} = Bencode.decode_with_info_hash(encoded)
 
-    changeset(%MrTorrent.Torrents.Torrent{info_hash: info_hash}, data)
+    data = Map.put(data, :info_hash, info_hash)
+
+    changeset(%MrTorrent.Torrents.Torrent{}, data)
   end
 
   def generate_torrent_file(data, announce_url, comment) do
     Bencode.encode(%{
-      announce: announce_url,
-      comment: comment,
-      info: %{
-        name: data.name,
-        files: data.files,
-        piece_length: data.piece_length,
-        pieces: data.pieces,
-        private: 1
-      }
+      "announce" => announce_url,
+      "comment" => comment,
+      "info" => generate_info(data)
     })
+  end
+
+  defp generate_info(data) do
+    if Enum.count(data.files) == 1 do
+      %{
+        "name" => data.name,
+        "length" => List.first(data.files).length,
+        "piece length" => data.piece_length,
+        "pieces" => data.pieces,
+        "private" => 1
+      }
+    else
+      %{
+        "name" => data.name,
+        "files" => data.files,
+        "piece length" => data.piece_length,
+        "pieces" => data.pieces,
+        "private" => 1
+      }
+    end
   end
 
   defp parse_files(%{"files" => files})
@@ -71,9 +88,8 @@ defmodule MrTorrent.Torrents.Torrent do
     Enum.map(files, &parse_file/1)
   end
 
-  defp parse_files(file)
-  when is_map(file) do
-    [parse_file(file)]
+  defp parse_files(info) do
+    [length: info.length, name: info.name]
   end
 
   defp parse_file(%{"length" => length, "path" => path}) do

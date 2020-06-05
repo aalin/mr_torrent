@@ -46,7 +46,8 @@ defmodule MrTorrent.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:bencode, "~> 0.3.2"},
-      {:bcrypt_elixir, "~> 2.2"}
+      {:bcrypt_elixir, "~> 2.2"},
+      {:ecto_network, "~> 1.3.0"}
     ]
   end
 

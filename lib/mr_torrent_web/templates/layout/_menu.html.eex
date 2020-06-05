@@ -2,7 +2,7 @@
 <%= if @current_user do %>
   <li>Logged in as <%= @current_user.username %></li>
   <li><%= link "Browse torrents", to: Routes.torrent_path(@conn, :index) %></li>
-  <li><%= link "New torrent", to: Routes.torrent_path(@conn, :new) %></li>
+  <li><%= link "Upload torrent", to: Routes.torrent_path(@conn, :new) %></li>
   <li><%= link "Logout", to: Routes.session_path(@conn, :delete), method: :delete %></li>
 <% else %>
   <li><%= link "Login", to: Routes.session_path(@conn, :new) %></li>

@@ -1,8 +1,6 @@
 defmodule MrTorrentWeb.Router do
   use MrTorrentWeb, :router
 
-  #alias MrTorrentWeb.SessionController
-
   import MrTorrentWeb.UserAuth
 
   pipeline :browser do
@@ -12,6 +10,10 @@ defmodule MrTorrentWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+  end
+
+  pipeline :torrent_client do
+    plug :accepts, ["*/*"]
   end
 
   pipeline :api do
@@ -35,10 +37,10 @@ defmodule MrTorrentWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     get "/torrents", TorrentController, :index
-    get "/torrents/new", TorrentController, :new
-    post "/torrents", TorrentController, :create
     get "/torrents/:slug", TorrentController, :show
-    get "/torrents/download/:slug", TorrentController, :download
+    get "/download/:slug", TorrentController, :download
+    get "/upload", TorrentController, :new
+    post "/torrents", TorrentController, :create
   end
 
   scope "/", MrTorrentWeb do
@@ -50,10 +52,17 @@ defmodule MrTorrentWeb.Router do
     delete "/session", SessionController, :delete
   end
 
+  scope "/", MrTorrentWeb do
+    pipe_through [:torrent_client]
+
+    get "/announce/:token", TorrentController, :announce
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", MrTorrentWeb do
   #   pipe_through :api
   # end
+  #
 
   # Enables LiveDashboard only for development
   #

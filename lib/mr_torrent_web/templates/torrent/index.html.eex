@@ -18,5 +18,3 @@
 <% end %>
   </tbody>
 </table>
-
-<span><%= link "New Torrent", to: Routes.torrent_path(@conn, :new) %></span>

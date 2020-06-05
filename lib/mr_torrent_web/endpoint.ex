@@ -35,6 +35,8 @@ defmodule MrTorrentWeb.Endpoint do
     plug Phoenix.Ecto.CheckRepoStatus, otp_app: :mr_torrent
   end
 
+  plug :stop_parsers_for_announce_requests
+
   plug Phoenix.LiveDashboard.RequestLogger,
     param_key: "request_logger",
     cookie_key: "request_logger"
@@ -51,4 +53,12 @@ defmodule MrTorrentWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug MrTorrentWeb.Router
+
+  defp stop_parsers_for_announce_requests(conn, _) do
+    if List.first(conn.path_info) == "announce" do
+      %{conn | params: %{}, query_params: URI.decode_query(conn.query_string), body_params: %{}}
+    else
+      conn
+    end
+  end
 end
