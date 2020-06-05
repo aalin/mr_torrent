@@ -1,6 +1,8 @@
 defmodule MrTorrentWeb.TorrentControllerTest do
   use MrTorrentWeb.ConnCase
 
+  import MrTorrent.TorrentsFixtures
+
   setup :register_and_login_user
 
 #  describe "index" do
@@ -17,19 +19,9 @@ defmodule MrTorrentWeb.TorrentControllerTest do
     end
   end
 
-  def create_upload do
-    path = "test/support/fixtures/The.Karate.Kid.1984.1080p.BluRay.x264-CiNEFiLE.torrent"
-    %Plug.Upload{path: path, filename: Path.basename(path)}
-  end
-
-  def create_invalid_upload do
-    path = "test/support/fixtures/invalid.torrent"
-    %Plug.Upload{path: path, filename: Path.basename(path)}
-  end
-
   describe "create torrent" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.torrent_path(conn, :create), file: create_upload())
+      conn = post(conn, Routes.torrent_path(conn, :create), file: valid_torrent_upload())
 
       assert %{slug: slug} = redirected_params(conn)
       assert redirected_to(conn) == Routes.torrent_path(conn, :show, slug)
@@ -39,7 +31,7 @@ defmodule MrTorrentWeb.TorrentControllerTest do
     end
 
 #    test "renders errors when data is invalid", %{conn: conn} do
-#      conn = post(conn, Routes.torrent_path(conn, :create), torrent: %{ file: create_invalid_upload() })
+#      conn = post(conn, Routes.torrent_path(conn, :create), torrent: %{ file: invalid_torrent_upload() })
 #      assert html_response(conn, 200) =~ "New Torrent"
 #    end
   end
