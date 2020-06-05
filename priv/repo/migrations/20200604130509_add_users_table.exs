@@ -8,6 +8,7 @@ defmodule MrTorrent.Repo.Migrations.AddUsersTable do
       add :username, :citext, null: false
       add :email, :citext, null: false
       add :password_hash, :string, null: false
+      add :admin, :boolean, null: false, default: false
       add :confirmed_at, :naive_datetime
       timestamps()
     end

@@ -19,8 +19,6 @@ defmodule MrTorrent.Torrents.Torrent do
   end
 
   def changeset(torrent, attrs) do
-    IO.inspect(torrent)
-    IO.inspect(attrs)
     torrent
     |> cast(attrs, [:name, :files, :piece_length, :pieces, :user_id])
     |> validate_required([:name, :files, :piece_length, :pieces, :user_id])
@@ -35,8 +33,6 @@ defmodule MrTorrent.Torrents.Torrent do
   def from_file(path, user) do
     {:ok, file} = File.read(path)
     {:ok, %{"info" => info}} = Bencode.decode(file)
-
-    name = Path.basename(info["name"])
 
     data = %{
       name: info["name"],
@@ -89,7 +85,7 @@ defmodule MrTorrent.Torrents.Torrent do
   end
 
   defp parse_files(info) do
-    [length: info.length, name: info.name]
+    [%{length: info["length"], name: info["name"]}]
   end
 
   defp parse_file(%{"length" => length, "path" => path}) do
