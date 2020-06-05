@@ -19,7 +19,7 @@ defmodule MrTorrent.TorrentsTest do
       assert Torrents.get_torrent!(torrent.id) == torrent
     end
 
-    test "create_torrent/1 with a valid torrent creates it" do
+    test "create_torrent/2 with a valid torrent creates it" do
       assert {:ok, %Torrent{} = torrent} = MrTorrent.Torrents.create_torrent(
         valid_torrent_upload(),
         user_fixture()
@@ -32,7 +32,7 @@ defmodule MrTorrent.TorrentsTest do
       assert torrent.piece_length == 1024 * 256
     end
 
-    test "create_torrent/1 with invalid data returns error changeset" do
+    test "create_torrent/2 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = MrTorrent.Torrents.create_torrent(
         invalid_torrent_upload(),
         user_fixture()
@@ -47,7 +47,36 @@ defmodule MrTorrent.TorrentsTest do
   end
 
   describe "accesses" do
-    #alias MrTorrent.Torrents.Access
+    setup do
+      %{
+        torrent: torrent_fixture(),
+        user: user_fixture()
+      }
+    end
+
+    test "generate_torrent_for_user/3 returns a torrent file", %{torrent: torrent, user: user} do
+      conn = %Plug.Conn{scheme: :https, host: "mrtracker.local", port: 1234}
+
+      {:ok, torrent_file} = Torrents.generate_torrent_for_user(conn, torrent, user)
+      {:ok, decoded, info_hash} = Bencode.decode_with_info_hash(torrent_file)
+
+      assert info_hash == torrent.info_hash
+      assert String.starts_with?(decoded["announce"], "https://mrtracker.local:1234/announce/")
+      assert decoded["info"]["length"] == 2217940452
+      assert decoded["info"]["private"] == 1
+    end
+
+    test "generate_torrent_for_user/3 creates only one access per user", %{torrent: torrent, user: user} do
+      conn = %Plug.Conn{scheme: :https, host: "mrtracker.local"}
+
+      assert Torrents.download_count(torrent) == 0
+
+      {:ok, _torrent_file} = Torrents.generate_torrent_for_user(conn, torrent, user)
+      assert Torrents.download_count(torrent) == 1
+
+      {:ok, _torrent_file} = Torrents.generate_torrent_for_user(conn, torrent, user)
+      assert Torrents.download_count(torrent) == 1
+    end
   end
 
   describe "announcements" do

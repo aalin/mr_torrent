@@ -1,6 +1,5 @@
 defmodule MrTorrent.Torrents.Access do
   use Ecto.Schema
-  import Ecto.Changeset
   import Ecto.Query, only: [from: 2]
 
   @rand_size 32
@@ -33,6 +32,12 @@ defmodule MrTorrent.Torrents.Access do
       select: [access, user, torrent]
 
     {:ok, query}
+  end
+
+  def download_count_query(torrent) do
+    from access in MrTorrent.Torrents.Access,
+      where: [torrent_id: ^torrent.id],
+      select: count(access.id)
   end
 
   def encode_token(token), do: Base.encode16(token)

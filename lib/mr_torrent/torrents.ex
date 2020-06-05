@@ -25,13 +25,16 @@ defmodule MrTorrent.Torrents do
     Repo.delete(torrent)
   end
 
-  def generate_torrent_for_user(conn, %Torrent{} = torrent, user) do
+  def generate_torrent_for_user(%Plug.Conn{} = conn, %Torrent{} = torrent, user) do
     access = find_or_create_access(torrent, user)
 
-    announce_url = "#{conn.scheme}://#{conn.host}:#{conn.port}/announce/#{Access.encode_token(access.token)}"
     comment = "MrTorrent Tracker"
 
-    Torrent.generate_torrent_file(torrent, announce_url, comment)
+    Torrent.generate_torrent_file(
+      torrent,
+      announce_url(conn, access.token),
+      comment
+    )
   end
 
   defp find_or_create_access(torrent, user) do
@@ -43,6 +46,23 @@ defmodule MrTorrent.Torrents do
       Access.generate_access(torrent, user)
       |> Repo.insert!()
     end
+  end
+
+  defp announce_url(%Plug.Conn{scheme: scheme, host: host, port: port}, token) do
+    encoded_token = Access.encode_token(token)
+
+    %URI{
+      scheme: Atom.to_string(scheme),
+      host: host,
+      port: port,
+      path: "/announce/#{encoded_token}"
+    }
+    |> URI.to_string
+  end
+
+  def download_count(%Torrent{} = torrent) do
+    Access.download_count_query(torrent)
+    |> Repo.one
   end
 
   def announce(ip, token, params) do
