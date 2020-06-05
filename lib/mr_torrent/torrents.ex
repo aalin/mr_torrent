@@ -12,6 +12,10 @@ defmodule MrTorrent.Torrents do
   def get_torrent!(id), do: Repo.get!(Torrent, id)
   def get_torrent_by_slug!(slug), do: Repo.get_by!(Torrent, slug: slug)
 
+  def new_torrent do
+    Torrent.new_changeset(%Torrent{})
+  end
+
   def create_torrent(%Plug.Upload{path: path}, %MrTorrent.Accounts.User{} = user) do
     Torrent.create_from_file(path, user)
     |> Repo.insert

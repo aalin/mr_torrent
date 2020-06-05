@@ -71,6 +71,10 @@ defmodule MrTorrent.Torrents.Torrent do
     timestamps()
   end
 
+  def new_changeset(torrent, attrs \\ %{}) do
+    change(torrent, attrs)
+  end
+
   def create_changeset(torrent, path, user) do
     changeset =
       change(torrent)

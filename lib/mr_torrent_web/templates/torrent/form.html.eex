@@ -1,4 +1,16 @@
 <%= form_for @conn, @action, [multipart: true], fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+    <ul
+      <%= for {field, {message, _validation}} <- @changeset.errors do %>
+        <li><%= Atom.to_string(field) %>: <%= message %></li>
+    <% end %>
+    </ul>
+  <% end %>
+
+
   <%= label f, :file %>
   <%= file_input f, :file %>
 

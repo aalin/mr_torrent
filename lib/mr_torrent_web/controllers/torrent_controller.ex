@@ -9,7 +9,7 @@ defmodule MrTorrentWeb.TorrentController do
   end
 
   def new(conn, _params) do
-    render(conn, "new.html")
+    render(conn, "new.html", changeset: Torrents.new_torrent())
   end
 
   def create(conn, %{"file" => file}) do
