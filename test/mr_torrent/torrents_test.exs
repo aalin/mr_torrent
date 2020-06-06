@@ -115,6 +115,7 @@ defmodule MrTorrent.TorrentsTest do
       assert error == "Could not verify token"
     end
 
+    @tag :pending
     test "announce/3 returns an error if the user does not exist"
   end
 end
