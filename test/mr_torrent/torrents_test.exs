@@ -32,6 +32,39 @@ defmodule MrTorrent.TorrentsTest do
       assert torrent.piece_length == 1024 * 256
     end
 
+    test "create_torrent/2 with a valid multifile torrent creates it" do
+      assert {:ok, %Torrent{} = torrent} = MrTorrent.Torrents.create_torrent(
+        valid_multifile_torrent_upload(),
+        user_fixture()
+      )
+
+      assert torrent.name == "gd1967-07-23.aud.sorochty.125462.flac16"
+      assert torrent.files == [
+        %{length: 56821, path: ["ATheDeadBook.jpg"]},
+        %{length: 3339, path: ["ATheDeadBook_thumb.jpg"]},
+        %{length: 67229, path: ["BFlexi-disc.jpg"]},
+        %{length: 5630, path: ["BFlexi-disc_thumb.jpg"]},
+        %{length: 61336, path: ["CNealCassadyMugshot.jpg"]},
+        %{length: 3312, path: ["CNealCassadyMugshot_thumb.jpg"]},
+        %{length: 20156, path: ["TranscriptOfNealCassadysRap.htm"]},
+        %{length: 6898, path: ["__ia_thumb.jpg"]},
+        %{length: 114, path: ["gd1967-07-23.aud.sorochty.125462.flac16.ffp"]},
+        %{length: 116, path: ["gd1967-07-23.aud.sorochty.125462.flac16.md5"]},
+        %{length: 3668, path: ["gd1967-07-23.aud.sorochty.125462.flac16_meta.xml"]},
+        %{length: 118, path: ["gd67-07-23.aud.cassady.sorochty.flac16.md5"]},
+        %{length: 2906, path: ["gd67-07-23.aud.cassady.sorochty.txt"]},
+        %{length: 62323126, path: ["gd67-07-23d1t1.aud.flac"]},
+        %{length: 17641472, path: ["gd67-07-23d1t1.aud.mp3"]},
+        %{length: 8968304, path: ["gd67-07-23d1t1.aud.ogg"]},
+        %{length: 11266, path: ["gd67-07-23d1t1.aud.png"]},
+        %{length: 65199823, path: ["gd67-07-23d1t2.aud.flac"]},
+        %{length: 15015424, path: ["gd67-07-23d1t2.aud.mp3"]},
+        %{length: 7807069, path: ["gd67-07-23d1t2.aud.ogg"]},
+        %{length: 11870, path: ["gd67-07-23d1t2.aud.png"]}
+      ]
+      assert torrent.piece_length == 1024 * 512
+    end
+
     test "create_torrent/2 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = MrTorrent.Torrents.create_torrent(
         invalid_torrent_upload(),

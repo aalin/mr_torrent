@@ -6,6 +6,11 @@ defmodule MrTorrent.TorrentsFixtures do
     %Plug.Upload{path: path, filename: Path.basename(path)}
   end
 
+  def valid_multifile_torrent_upload do
+    path = "test/support/fixtures/gd1967-07-23.aud.sorochty.125462.flac16_archive.torrent"
+    %Plug.Upload{path: path, filename: Path.basename(path)}
+  end
+
   def invalid_torrent_upload do
     path = "test/support/fixtures/invalid.torrent"
     %Plug.Upload{path: path, filename: Path.basename(path)}
