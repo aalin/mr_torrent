@@ -25,9 +25,9 @@ defmodule MrTorrent.TorrentsTest do
         user_fixture()
       )
 
-      assert torrent.name == "The.Karate.Kid.1984.1080p.BluRay.x264-CiNEFiLE"
+      assert torrent.name == "debian-10.4.0-amd64-netinst.iso"
       assert torrent.files == [
-        %{length: 2217940452, path: ["The.Karate.Kid.1984.1080p.BluRay.x264-CiNEFiLE"]}
+        %{length: 352321536, path: ["debian-10.4.0-amd64-netinst.iso"]}
       ]
       assert torrent.piece_length == 1024 * 256
     end
@@ -62,7 +62,7 @@ defmodule MrTorrent.TorrentsTest do
 
       assert info_hash == torrent.info_hash
       assert String.starts_with?(decoded["announce"], "https://mrtracker.local:1234/announce/")
-      assert decoded["info"]["length"] == 2217940452
+      assert decoded["info"]["length"] == 352321536
       assert decoded["info"]["private"] == 1
     end
 

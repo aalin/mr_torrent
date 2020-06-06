@@ -27,7 +27,7 @@ defmodule MrTorrentWeb.TorrentControllerTest do
       assert redirected_to(conn) == Routes.torrent_path(conn, :show, slug)
 
       conn = get(conn, Routes.torrent_path(conn, :show, slug))
-      assert html_response(conn, 200) =~ "<h1>The.Karate.Kid.1984.1080p.BluRay.x264-CiNEFiLE</h1>"
+      assert html_response(conn, 200) =~ "<h1>debian-10.4.0-amd64-netinst.iso</h1>"
     end
 
 #    test "renders errors when data is invalid", %{conn: conn} do

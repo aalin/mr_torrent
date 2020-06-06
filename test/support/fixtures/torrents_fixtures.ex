@@ -2,7 +2,7 @@ defmodule MrTorrent.TorrentsFixtures do
   import MrTorrent.AccountsFixtures
 
   def valid_torrent_upload do
-    path = "test/support/fixtures/The.Karate.Kid.1984.1080p.BluRay.x264-CiNEFiLE.torrent"
+    path = "test/support/fixtures/debian-10.4.0-amd64-netinst.iso.torrent"
     %Plug.Upload{path: path, filename: Path.basename(path)}
   end
 
