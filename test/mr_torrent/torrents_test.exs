@@ -80,6 +80,41 @@ defmodule MrTorrent.TorrentsTest do
   end
 
   describe "announcements" do
-    #alias MrTorrent.Torrents.Announcement
+    @valid_params %{downloaded: 0, uploaded: 0, left: 0, port: 1234, event: "started"}
+
+    setup do
+      torrent = torrent_fixture()
+      user = user_fixture()
+      access = Torrents.find_or_create_access(torrent, user)
+
+      %{
+        torrent: torrent,
+        user: user,
+        access: access
+      }
+    end
+
+    test "announce/3 returns a peer list", %{ access: access} do
+      {:ok, response} = Torrents.announce(
+        {192, 168, 0, 1},
+        Torrents.Access.encode_token(access.token),
+        @valid_params
+      )
+
+      assert response.interval == 300
+      assert response.peers == []
+    end
+
+    test "announce/3 returns an error if the token is invalid" do
+      {:error, error} = Torrents.announce(
+        {192, 168, 0, 1},
+        "invalid",
+        @valid_params
+      )
+
+      assert error == "Could not verify token"
+    end
+
+    test "announce/3 returns an error if the user does not exist"
   end
 end

@@ -37,7 +37,7 @@ defmodule MrTorrent.Torrents do
     )
   end
 
-  defp find_or_create_access(torrent, user) do
+  def find_or_create_access(torrent, user) do
     {:ok, query} = Access.find_for_torrent_and_user_query(torrent, user)
 
     if access = Repo.one(query) do
@@ -66,22 +66,31 @@ defmodule MrTorrent.Torrents do
   end
 
   def announce(ip, token, params) do
-    {:ok, raw_token} = Access.decode_token(token)
-    {:ok, query} = Access.verify_token_query(raw_token)
+    case decode_and_verify_token(token) do
+      {:ok, access, _user, torrent} ->
+        # TODO: Check if user is still active
+        Announcement.generate(ip, access, params)
+        |> Repo.insert!()
+        {:ok, announce_response(torrent)}
+      {:error, message} ->
+        {:error, message}
+    end
+  end
 
-    if [access, _user, torrent] = Repo.one(query) do
-      # TODO: Check if user is still active
-      Announcement.generate(ip, access, params)
-      |> Repo.insert!()
-      {:ok, build_peerlist(torrent)}
+  defp decode_and_verify_token(token) do
+    with {:ok, raw_token} <- Access.decode_token(token),
+         {:ok, query} <- Access.verify_token_query(raw_token),
+         [access, user, torrent] <- Repo.one(query) do
+      {:ok, access, user, torrent}
     else
-      {:error, "Coult not verify token"}
+      _ ->
+        {:error, "Could not verify token"}
     end
   end
 
   @announce_interval 60 * 5
 
-  defp build_peerlist(torrent) do
+  defp announce_response(_torrent) do
     peers = []
     %{interval: @announce_interval, peers: peers}
   end
