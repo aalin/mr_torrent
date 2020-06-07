@@ -21,10 +21,11 @@ defmodule MrTorrent.Accounts.UserSession do
   end
 
   def verify_token_query(token) do
-    query = from session in MrTorrent.Accounts.UserSession,
-      where: [token: ^token],
-      join: user in assoc(session, :user),
-      select: user
+    query =
+      from session in MrTorrent.Accounts.UserSession,
+        where: [token: ^token],
+        join: user in assoc(session, :user),
+        select: user
 
     {:ok, query}
   end

@@ -19,7 +19,7 @@ defmodule MrTorrent.Torrents do
 
   def create_torrent(%Plug.Upload{path: path}, %MrTorrent.Accounts.User{} = user) do
     Torrent.create_from_file(path, user)
-    |> Repo.insert
+    |> Repo.insert()
   end
 
   def delete_torrent(%Torrent{} = torrent) do
@@ -58,12 +58,12 @@ defmodule MrTorrent.Torrents do
       port: port,
       path: "/announce/#{encoded_token}"
     }
-    |> URI.to_string
+    |> URI.to_string()
   end
 
   def download_count(%Torrent{} = torrent) do
     Access.download_count_query(torrent)
-    |> Repo.one
+    |> Repo.one()
   end
 
   @announce_interval 60 * 5
@@ -78,6 +78,7 @@ defmodule MrTorrent.Torrents do
         {:ok, peers} = Peerlist.announce(torrent, ip, params)
 
         {:ok, %{interval: @announce_interval, peers: peers}}
+
       {:error, message} ->
         {:error, message}
     end
@@ -93,5 +94,4 @@ defmodule MrTorrent.Torrents do
         {:error, "Could not verify token"}
     end
   end
-
 end

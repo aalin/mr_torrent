@@ -33,7 +33,9 @@ defmodule MrTorrentWeb.TorrentController do
 
   def download(conn, %{"slug" => slug}) do
     torrent = Torrents.get_torrent_by_slug!(slug)
-    {:ok, torrent_file} = Torrents.generate_torrent_for_user(conn, torrent, conn.assigns.current_user)
+
+    {:ok, torrent_file} =
+      Torrents.generate_torrent_for_user(conn, torrent, conn.assigns.current_user)
 
     send_download(
       conn,
@@ -56,6 +58,7 @@ defmodule MrTorrentWeb.TorrentController do
     case Torrents.announce(conn.remote_ip, params["token"], params) do
       {:ok, response} ->
         text(conn, Bencode.encode!(response))
+
       {:error, error} ->
         text(conn, Bencode.encode!(%{"error reason" => error}))
     end

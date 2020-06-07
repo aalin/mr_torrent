@@ -16,12 +16,13 @@ defmodule MrTorrentWeb.SessionControllerTest do
 
   describe "create user_session" do
     test "redirects to show when data is valid", %{conn: conn, user: user} do
-      conn = post(conn, Routes.session_path(conn, :create), %{
-        "user" => %{
-          "username" => user.username,
-          "password" => valid_user_password()
-        }
-      })
+      conn =
+        post(conn, Routes.session_path(conn, :create), %{
+          "user" => %{
+            "username" => user.username,
+            "password" => valid_user_password()
+          }
+        })
 
       assert get_session(conn, :user_token)
       assert redirected_to(conn) =~ "/"
@@ -31,12 +32,13 @@ defmodule MrTorrentWeb.SessionControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do
-      conn = post(conn, Routes.session_path(conn, :create), %{
-        "user" => %{
-          "username" => user.username,
-          "password" => "invalid"
-        }
-      })
+      conn =
+        post(conn, Routes.session_path(conn, :create), %{
+          "user" => %{
+            "username" => user.username,
+            "password" => "invalid"
+          }
+        })
 
       assert html_response(conn, 200) =~ "Login"
     end

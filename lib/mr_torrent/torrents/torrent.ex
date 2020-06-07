@@ -7,7 +7,7 @@ defmodule MrTorrent.Torrents.Torrent do
     def equal?(a, b), do: Map.equal?(a, b)
 
     def cast(map)
-    when is_map(map) do
+        when is_map(map) do
       {:ok, map}
     end
 
@@ -16,7 +16,7 @@ defmodule MrTorrent.Torrents.Torrent do
     end
 
     def dump(map)
-    when is_map(map) do
+        when is_map(map) do
       result =
         for {key, val} <- map, into: %{} do
           if is_atom(key) do
@@ -25,6 +25,7 @@ defmodule MrTorrent.Torrents.Torrent do
             {key, val}
           end
         end
+
       {:ok, result}
     end
 
@@ -33,14 +34,15 @@ defmodule MrTorrent.Torrents.Torrent do
     end
 
     def load(map)
-    when is_map(map) do
-      result = for {key, val} <- map, into: %{} do
-        if is_atom(key) do
-          {key, val}
-        else
-          {String.to_existing_atom(key), val}
+        when is_map(map) do
+      result =
+        for {key, val} <- map, into: %{} do
+          if is_atom(key) do
+            {key, val}
+          else
+            {String.to_existing_atom(key), val}
+          end
         end
-      end
 
       {:ok, result}
     end
@@ -104,6 +106,7 @@ defmodule MrTorrent.Torrents.Torrent do
     case decode_file(path) do
       {:ok, info} ->
         put_change(changeset, :decoded_info, info)
+
       {:error, message} ->
         add_error(changeset, :file, message)
     end
@@ -126,9 +129,11 @@ defmodule MrTorrent.Torrents.Torrent do
         case Bencode.decode_with_info_hash(encoded) do
           {:ok, _, info_hash} ->
             put_change(changeset, :info_hash, info_hash)
+
           {:error, _error} ->
             add_error(changeset, :info_hash, "could not be calculated")
         end
+
       {:error, _error} ->
         add_error(changeset, :info_hash, "could not be calculated")
     end
@@ -141,8 +146,7 @@ defmodule MrTorrent.Torrents.Torrent do
 
   defp decode_file(path) do
     with {:ok, file} <- File.read(path),
-         {:ok, %{"info" => info}} <- Bencode.decode(file)
-    do
+         {:ok, %{"info" => info}} <- Bencode.decode(file) do
       {:ok, info}
     end
   end
@@ -176,7 +180,7 @@ defmodule MrTorrent.Torrents.Torrent do
   end
 
   defp parse_files(%{"files" => files})
-  when is_list(files) do
+       when is_list(files) do
     Enum.map(files, &parse_file/1)
   end
 

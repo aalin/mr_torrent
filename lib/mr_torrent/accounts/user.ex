@@ -12,12 +12,13 @@ defmodule MrTorrent.Accounts.User do
   end
 
   def valid_password?(%MrTorrent.Accounts.User{password_hash: password_hash}, password)
-  when is_binary(password_hash) and byte_size(password_hash) > 0 do
+      when is_binary(password_hash) and byte_size(password_hash) > 0 do
     Bcrypt.verify_pass(password, password_hash)
   end
 
   def valid_password?(_, _) do
-    Bcrypt.no_user_verify() # avoid timing attacks
+    # avoid timing attacks
+    Bcrypt.no_user_verify()
     false
   end
 
@@ -32,7 +33,9 @@ defmodule MrTorrent.Accounts.User do
   defp validate_username(changeset) do
     changeset
     |> validate_required([:username])
-    |> validate_format(:username, ~r/^[a-z0-9\-_]+$/i, message: "must include only A-Z, a-z, 0-9, - and _")
+    |> validate_format(:username, ~r/^[a-z0-9\-_]+$/i,
+      message: "must include only A-Z, a-z, 0-9, - and _"
+    )
     |> validate_length(:username, min: 2, max: 20)
     |> unsafe_validate_unique(:username, MrTorrent.Repo)
     |> unique_constraint(:username)

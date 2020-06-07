@@ -15,7 +15,7 @@ defmodule MrTorrent.Peerlist do
 
     peers = Agent.get(peerlist, & &1)
 
-    Enum.reduce(peers, {0, 0}, fn ({_key, %{left: left}}, {seeders, leechers}) ->
+    Enum.reduce(peers, {0, 0}, fn {_key, %{left: left}}, {seeders, leechers} ->
       if left == 0 do
         {seeders + 1, leechers}
       else
@@ -30,7 +30,7 @@ defmodule MrTorrent.Peerlist do
   end
 
   defp update_peerlist(agent, ip, params)
-  when is_pid(agent) do
+       when is_pid(agent) do
     peer_id = Map.fetch!(params, "peer_id")
     ip = Map.get(params, "ip", ip)
     {port, _} = Integer.parse(Map.fetch!(params, "port"))
@@ -41,11 +41,13 @@ defmodule MrTorrent.Peerlist do
     case params["event"] do
       "stopped" ->
         Agent.update(agent, &Map.delete(&1, key))
+
       _ ->
         value = %{
-          updated_at: Time.utc_now,
+          updated_at: Time.utc_now(),
           left: bytes_left
         }
+
         Agent.update(agent, &Map.put(&1, key, value))
     end
 
@@ -57,11 +59,11 @@ defmodule MrTorrent.Peerlist do
   end
 
   defp get_peers(agent, count)
-  when is_number(count) do
+       when is_number(count) do
     peers =
       Agent.get(agent, & &1)
-      |> Map.keys
-      |> Enum.shuffle
+      |> Map.keys()
+      |> Enum.shuffle()
       |> Enum.slice(0, Kernel.max(0, Kernel.min(count, @max_peers)))
       |> Enum.map(fn {id, ip, port} ->
         %{
@@ -77,13 +79,13 @@ defmodule MrTorrent.Peerlist do
   end
 
   defp delete_old_peers(agent) do
-    now = Time.utc_now
+    now = Time.utc_now()
 
     Agent.update(agent, fn peers ->
       Enum.reject(peers, fn {_key, value} ->
         should_peer_be_deleted?(now, value)
       end)
-      |> Map.new
+      |> Map.new()
     end)
   end
 

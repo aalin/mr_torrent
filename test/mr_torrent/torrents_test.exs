@@ -20,56 +20,63 @@ defmodule MrTorrent.TorrentsTest do
     end
 
     test "create_torrent/2 with a valid torrent creates it" do
-      assert {:ok, %Torrent{} = torrent} = MrTorrent.Torrents.create_torrent(
-        valid_torrent_upload(),
-        user_fixture()
-      )
+      assert {:ok, %Torrent{} = torrent} =
+               MrTorrent.Torrents.create_torrent(
+                 valid_torrent_upload(),
+                 user_fixture()
+               )
 
       assert torrent.name == "debian-10.4.0-amd64-netinst.iso"
+
       assert torrent.files == [
-        %{length: 352321536, path: ["debian-10.4.0-amd64-netinst.iso"]}
-      ]
+               %{length: 352_321_536, path: ["debian-10.4.0-amd64-netinst.iso"]}
+             ]
+
       assert torrent.piece_length == 1024 * 256
     end
 
     test "create_torrent/2 with a valid multifile torrent creates it" do
-      assert {:ok, %Torrent{} = torrent} = MrTorrent.Torrents.create_torrent(
-        valid_multifile_torrent_upload(),
-        user_fixture()
-      )
+      assert {:ok, %Torrent{} = torrent} =
+               MrTorrent.Torrents.create_torrent(
+                 valid_multifile_torrent_upload(),
+                 user_fixture()
+               )
 
       assert torrent.name == "gd1967-07-23.aud.sorochty.125462.flac16"
+
       assert torrent.files == [
-        %{length: 56821, path: ["ATheDeadBook.jpg"]},
-        %{length: 3339, path: ["ATheDeadBook_thumb.jpg"]},
-        %{length: 67229, path: ["BFlexi-disc.jpg"]},
-        %{length: 5630, path: ["BFlexi-disc_thumb.jpg"]},
-        %{length: 61336, path: ["CNealCassadyMugshot.jpg"]},
-        %{length: 3312, path: ["CNealCassadyMugshot_thumb.jpg"]},
-        %{length: 20156, path: ["TranscriptOfNealCassadysRap.htm"]},
-        %{length: 6898, path: ["__ia_thumb.jpg"]},
-        %{length: 114, path: ["gd1967-07-23.aud.sorochty.125462.flac16.ffp"]},
-        %{length: 116, path: ["gd1967-07-23.aud.sorochty.125462.flac16.md5"]},
-        %{length: 3668, path: ["gd1967-07-23.aud.sorochty.125462.flac16_meta.xml"]},
-        %{length: 118, path: ["gd67-07-23.aud.cassady.sorochty.flac16.md5"]},
-        %{length: 2906, path: ["gd67-07-23.aud.cassady.sorochty.txt"]},
-        %{length: 62323126, path: ["gd67-07-23d1t1.aud.flac"]},
-        %{length: 17641472, path: ["gd67-07-23d1t1.aud.mp3"]},
-        %{length: 8968304, path: ["gd67-07-23d1t1.aud.ogg"]},
-        %{length: 11266, path: ["gd67-07-23d1t1.aud.png"]},
-        %{length: 65199823, path: ["gd67-07-23d1t2.aud.flac"]},
-        %{length: 15015424, path: ["gd67-07-23d1t2.aud.mp3"]},
-        %{length: 7807069, path: ["gd67-07-23d1t2.aud.ogg"]},
-        %{length: 11870, path: ["gd67-07-23d1t2.aud.png"]}
-      ]
+               %{length: 56821, path: ["ATheDeadBook.jpg"]},
+               %{length: 3339, path: ["ATheDeadBook_thumb.jpg"]},
+               %{length: 67229, path: ["BFlexi-disc.jpg"]},
+               %{length: 5630, path: ["BFlexi-disc_thumb.jpg"]},
+               %{length: 61336, path: ["CNealCassadyMugshot.jpg"]},
+               %{length: 3312, path: ["CNealCassadyMugshot_thumb.jpg"]},
+               %{length: 20156, path: ["TranscriptOfNealCassadysRap.htm"]},
+               %{length: 6898, path: ["__ia_thumb.jpg"]},
+               %{length: 114, path: ["gd1967-07-23.aud.sorochty.125462.flac16.ffp"]},
+               %{length: 116, path: ["gd1967-07-23.aud.sorochty.125462.flac16.md5"]},
+               %{length: 3668, path: ["gd1967-07-23.aud.sorochty.125462.flac16_meta.xml"]},
+               %{length: 118, path: ["gd67-07-23.aud.cassady.sorochty.flac16.md5"]},
+               %{length: 2906, path: ["gd67-07-23.aud.cassady.sorochty.txt"]},
+               %{length: 62_323_126, path: ["gd67-07-23d1t1.aud.flac"]},
+               %{length: 17_641_472, path: ["gd67-07-23d1t1.aud.mp3"]},
+               %{length: 8_968_304, path: ["gd67-07-23d1t1.aud.ogg"]},
+               %{length: 11266, path: ["gd67-07-23d1t1.aud.png"]},
+               %{length: 65_199_823, path: ["gd67-07-23d1t2.aud.flac"]},
+               %{length: 15_015_424, path: ["gd67-07-23d1t2.aud.mp3"]},
+               %{length: 7_807_069, path: ["gd67-07-23d1t2.aud.ogg"]},
+               %{length: 11870, path: ["gd67-07-23d1t2.aud.png"]}
+             ]
+
       assert torrent.piece_length == 1024 * 512
     end
 
     test "create_torrent/2 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = MrTorrent.Torrents.create_torrent(
-        invalid_torrent_upload(),
-        user_fixture()
-      )
+      assert {:error, %Ecto.Changeset{}} =
+               MrTorrent.Torrents.create_torrent(
+                 invalid_torrent_upload(),
+                 user_fixture()
+               )
     end
 
     test "delete_torrent/1 deletes the torrent" do
@@ -95,11 +102,14 @@ defmodule MrTorrent.TorrentsTest do
 
       assert info_hash == torrent.info_hash
       assert String.starts_with?(decoded["announce"], "https://mrtracker.local:1234/announce/")
-      assert decoded["info"]["length"] == 352321536
+      assert decoded["info"]["length"] == 352_321_536
       assert decoded["info"]["private"] == 1
     end
 
-    test "generate_torrent_for_user/3 creates only one access per user", %{torrent: torrent, user: user} do
+    test "generate_torrent_for_user/3 creates only one access per user", %{
+      torrent: torrent,
+      user: user
+    } do
       conn = %Plug.Conn{scheme: :https, host: "mrtracker.local"}
 
       assert Torrents.download_count(torrent) == 0
@@ -134,29 +144,32 @@ defmodule MrTorrent.TorrentsTest do
       }
     end
 
-    test "announce/3 returns a peer list", %{ access: access} do
-      {:ok, response} = Torrents.announce(
-        {192, 168, 0, 1},
-        Torrents.Access.encode_token(access.token),
-        @valid_params
-      )
+    test "announce/3 returns a peer list", %{access: access} do
+      {:ok, response} =
+        Torrents.announce(
+          {192, 168, 0, 1},
+          Torrents.Access.encode_token(access.token),
+          @valid_params
+        )
 
       assert response.interval == 300
+
       assert response.peers == [
-        %{
-          ip: '192.168.0.1',
-          peer_id: URI.encode(@valid_params["peer_id"]),
-          port: 6937
-        }
-      ]
+               %{
+                 ip: '192.168.0.1',
+                 peer_id: URI.encode(@valid_params["peer_id"]),
+                 port: 6937
+               }
+             ]
     end
 
     test "announce/3 returns an error if the token is invalid" do
-      {:error, error} = Torrents.announce(
-        {192, 168, 0, 1},
-        "invalid",
-        @valid_params
-      )
+      {:error, error} =
+        Torrents.announce(
+          {192, 168, 0, 1},
+          "invalid",
+          @valid_params
+        )
 
       assert error == "Could not verify token"
     end

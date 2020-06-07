@@ -18,18 +18,20 @@ defmodule MrTorrent.Torrents.Access do
   end
 
   def find_for_torrent_and_user_query(torrent, user) do
-    query = from access in MrTorrent.Torrents.Access,
-      where: [torrent_id: ^torrent.id, user_id: ^user.id]
+    query =
+      from access in MrTorrent.Torrents.Access,
+        where: [torrent_id: ^torrent.id, user_id: ^user.id]
 
     {:ok, query}
   end
 
   def verify_token_query(token) do
-    query = from access in MrTorrent.Torrents.Access,
-      where: [token: ^token],
-      join: user in assoc(access, :user),
-      join: torrent in assoc(access, :torrent),
-      select: [access, user, torrent]
+    query =
+      from access in MrTorrent.Torrents.Access,
+        where: [token: ^token],
+        join: user in assoc(access, :user),
+        join: torrent in assoc(access, :torrent),
+        select: [access, user, torrent]
 
     {:ok, query}
   end
