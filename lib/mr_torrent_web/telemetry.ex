@@ -29,6 +29,7 @@ defmodule MrTorrentWeb.Telemetry do
         tags: [:route],
         unit: {:native, :millisecond}
       ),
+      summary("mr_torrent.peerlist.registry.peerlist_count"),
 
       # Database Metrics
       summary("mr_torrent.repo.query.total_time", unit: {:native, :millisecond}),

@@ -71,6 +71,8 @@ defmodule MrTorrent.Peerlist do
         }
       end)
 
+    if Enum.empty?(peers), do: Agent.stop(agent)
+
     {:ok, peers}
   end
 

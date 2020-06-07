@@ -6,6 +6,8 @@ defmodule MrTorrent.Peerlist.Registry do
   end
 
   def init(:ok) do
+    schedule_telemetry_update()
+
     peerlists = %{}
     refs = %{}
     {:ok, {peerlists, refs}}
@@ -35,6 +37,16 @@ defmodule MrTorrent.Peerlist.Registry do
     end
   end
 
+  def handle_info(:update_telemetry, {peerlists, refs}) do
+    :telemetry.execute([:mr_torrent, :peerlist, :registry], %{
+      peerlist_count: Enum.count(peerlists)
+    })
+
+    schedule_telemetry_update()
+
+    {:noreply, {peerlists, refs}}
+  end
+
   def handle_info({:DOWN, ref, :process, _pid, _reason}, {peerlists, refs}) do
     {torrent_id, refs} = Map.pop(refs, ref)
     peerlists = Map.delete(peerlists, torrent_id)
@@ -43,5 +55,9 @@ defmodule MrTorrent.Peerlist.Registry do
 
   def handle_info(_msg, state) do
     {:noreply, state}
+  end
+
+  defp schedule_telemetry_update do
+    Process.send_after(self(), :update_telemetry, 5 * 1000)
   end
 end
