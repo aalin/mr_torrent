@@ -10,6 +10,7 @@ defmodule MrTorrentWeb.UserSocket do
       {:ok, user_id} ->
         socket = assign(socket, :user_id, MrTorrent.Accounts.get_user!(user_id).id)
         {:ok, socket}
+
       {:error, _} ->
         :error
     end
