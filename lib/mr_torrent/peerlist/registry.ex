@@ -17,7 +17,7 @@ defmodule MrTorrent.Peerlist.Registry do
     GenServer.call(server, {:has_peerlist?, torrent_id})
   end
 
-  def get_peerlist(server, torrent_id) do
+  def get_peerlist(server, torrent_id) when is_integer(torrent_id) do
     GenServer.call(server, {:get_peerlist, torrent_id})
   end
 

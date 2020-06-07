@@ -22,7 +22,8 @@ defmodule MrTorrent.PeerlistTest do
     params = %{
       "peer_id" => :crypto.strong_rand_bytes(5),
       "port" => "1234",
-      "left" => "0"
+      "left" => "0",
+      "event" => "started"
     }
 
     {ip, params}
