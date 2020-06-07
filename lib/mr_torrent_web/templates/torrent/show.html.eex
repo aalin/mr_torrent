@@ -8,9 +8,11 @@
   <dt>Uploaded by</dt>
   <dd><%= @user.username %></dd>
   <dt>Seeders</dt>
-  <dd><%= @seeders %></dd>
+  <dd><%= autoupdate_torrent_field @torrent.id, :seeders, @seeders %></dd>
   <dt>Leechers</dt>
-  <dd><%= @leechers %></dd>
+  <dd><%= autoupdate_torrent_field @torrent.id, :leechers, @leechers %></dd>
+  <dt>Total size</dt>
+  <dd><%= total_size @torrent %></dd>
   <dt>Files</dt>
   <dd>
     <ul>

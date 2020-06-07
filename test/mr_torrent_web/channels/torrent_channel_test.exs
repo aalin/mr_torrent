@@ -4,8 +4,8 @@ defmodule MrTorrentWeb.TorrentChannelTest do
   setup do
     {:ok, _, socket} =
       MrTorrentWeb.UserSocket
-      |> socket("user_id", %{some: :assign})
-      |> subscribe_and_join(MrTorrentWeb.TorrentChannel, "torrent:lobby")
+      |> socket("user_id", %{user_id: 1})
+      |> subscribe_and_join(MrTorrentWeb.TorrentChannel, "torrent:123")
 
     %{socket: socket}
   end

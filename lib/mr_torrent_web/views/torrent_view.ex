@@ -17,4 +17,8 @@ defmodule MrTorrentWeb.TorrentView do
     Enum.reduce(torrent.files, 0, fn file, acc -> file.length + acc end)
     |> format_file_size
   end
+
+  def autoupdate_torrent_field(torrent_id, field_name, initial_content \\ "") do
+    content_tag(:span, initial_content, "data-torrent-id": torrent_id, "data-torrent-field": field_name)
+  end
 end
