@@ -113,7 +113,14 @@ defmodule MrTorrent.TorrentsTest do
   end
 
   describe "announcements" do
-    @valid_params %{downloaded: 0, uploaded: 0, left: 0, port: 1234, event: "started"}
+    @valid_params %{
+      "downloaded" => "0",
+      "uploaded" => "0",
+      "left" => "0",
+      "port" => "6937",
+      "event" => "started",
+      "peer_id" => :crypto.strong_rand_bytes(5)
+    }
 
     setup do
       torrent = torrent_fixture()
@@ -135,7 +142,13 @@ defmodule MrTorrent.TorrentsTest do
       )
 
       assert response.interval == 300
-      assert response.peers == []
+      assert response.peers == [
+        %{
+          ip: '192.168.0.1',
+          peer_id: URI.encode(@valid_params["peer_id"]),
+          port: 6937
+        }
+      ]
     end
 
     test "announce/3 returns an error if the token is invalid" do

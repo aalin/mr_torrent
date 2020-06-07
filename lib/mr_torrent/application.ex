@@ -14,9 +14,10 @@ defmodule MrTorrent.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: MrTorrent.PubSub},
       # Start the Endpoint (http/https)
-      MrTorrentWeb.Endpoint
+      MrTorrentWeb.Endpoint,
       # Start a worker by calling: MrTorrent.Worker.start_link(arg)
       # {MrTorrent.Worker, arg}
+      MrTorrent.Peerlist.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

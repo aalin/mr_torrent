@@ -4,6 +4,7 @@ defmodule MrTorrent.Torrents do
   alias MrTorrent.Torrents.Torrent
   alias MrTorrent.Torrents.Access
   alias MrTorrent.Torrents.Announcement
+  alias MrTorrent.Peerlist
 
   def list_torrents do
     Repo.all(Torrent)
@@ -65,13 +66,18 @@ defmodule MrTorrent.Torrents do
     |> Repo.one
   end
 
+  @announce_interval 60 * 5
+
   def announce(ip, token, params) do
     case decode_and_verify_token(token) do
       {:ok, access, _user, torrent} ->
         # TODO: Check if user is still active
         Announcement.generate(ip, access, params)
         |> Repo.insert!()
-        {:ok, announce_response(torrent)}
+
+        {:ok, peers} = Peerlist.announce(torrent, ip, params)
+
+        {:ok, %{interval: @announce_interval, peers: peers}}
       {:error, message} ->
         {:error, message}
     end
@@ -88,10 +94,4 @@ defmodule MrTorrent.Torrents do
     end
   end
 
-  @announce_interval 60 * 5
-
-  defp announce_response(_torrent) do
-    peers = []
-    %{interval: @announce_interval, peers: peers}
-  end
 end
