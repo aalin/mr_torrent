@@ -16,8 +16,12 @@
     <tr>
       <td><%= link torrent.name, to: Routes.torrent_path(@conn, :show, torrent) %></td>
       <td><%= total_size(torrent) %></td>
-      <td><%= seeders %></td>
-      <td><%= leechers %></td>
+      <td data-torrent-id="<%= torrent.id %>" data-torrent-field="seeders">
+        <%= seeders %>
+      </td>
+      <td data-torrent-id="<%= torrent.id %>" data-torrent-field="leechers">
+        <%= leechers %>
+      </td>
       <td><a href="<%= Routes.torrent_path(@conn, :download, torrent) %>">Download .torrent</a></td>
     </tr>
   <% end %>

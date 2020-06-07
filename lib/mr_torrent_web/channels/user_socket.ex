@@ -3,6 +3,7 @@ defmodule MrTorrentWeb.UserSocket do
 
   ## Channels
   # channel "room:*", MrTorrentWeb.RoomChannel
+  channel "torrent:*", MrTorrentWeb.TorrentChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

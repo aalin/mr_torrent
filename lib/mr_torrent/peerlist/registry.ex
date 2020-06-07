@@ -30,7 +30,7 @@ defmodule MrTorrent.Peerlist.Registry do
       {:reply, {:ok, peerlist}, {peerlists, refs}}
     else
       {:ok, pid} =
-        DynamicSupervisor.start_child(MrTorrent.Peerlist.PeerlistSupervisor, MrTorrent.Peerlist)
+        DynamicSupervisor.start_child(MrTorrent.Peerlist.PeerlistSupervisor, {MrTorrent.Peerlist, torrent_id})
 
       ref = Process.monitor(pid)
       refs = Map.put(refs, ref, torrent_id)
