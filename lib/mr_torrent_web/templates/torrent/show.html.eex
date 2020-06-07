@@ -15,7 +15,7 @@
   <dd><%= total_size @torrent %></dd>
   <dt>Files</dt>
   <dd>
-    <ul>
+    <ul class="files-list">
       <%= for %{:path => path, :length => length} <- @torrent.files do %>
         <li><%= path %> (<%= format_file_size(length) %>)</li>
       <% end %>

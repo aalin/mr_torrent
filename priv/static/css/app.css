@@ -38,3 +38,13 @@ label {
 .form-field {
   margin: 1em 0;
 }
+
+.files-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+dt {
+  font-weight: bold;
+}
