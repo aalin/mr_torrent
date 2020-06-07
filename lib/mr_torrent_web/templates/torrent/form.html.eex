@@ -12,7 +12,7 @@
 
 
   <div class="form-field">
-    <%= label f, :file %>
+    <%= label f, :file, "Choose file" %>
     <%= file_input f, :file %>
   </div>
 
