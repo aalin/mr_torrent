@@ -6,11 +6,13 @@ defmodule MrTorrent.Peerlist do
   @peer_timeout 5 * 60 + 30
   @max_peers 50
 
-  def start_link(torrent_id) do
+  def start_link(torrent_id)
+    when is_integer(torrent_id) do
     GenServer.start_link(__MODULE__, torrent_id)
   end
 
-  def init(torrent_id) do
+  def init(torrent_id)
+      when is_integer(torrent_id) do
     state = %{id: torrent_id, peers: %{}}
     {:ok, state}
   end
