@@ -1,5 +1,16 @@
+function getSocketToken() {
+  const meta = document.querySelector('meta[name=socket_token]');
+  return meta && meta.content;
+}
+
 function startApp() {
-  const socket = new Phoenix.Socket("/socket", {params: {token: ''}})
+  const socketToken = getSocketToken();
+
+  if (!socketToken) {
+    return;
+  }
+
+  const socket = new Phoenix.Socket("/socket", { params: { token: socketToken } })
   socket.connect();
 
   const torrentChannels = new Map()
