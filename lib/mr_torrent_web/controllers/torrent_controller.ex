@@ -27,7 +27,8 @@ defmodule MrTorrentWeb.TorrentController do
   def show(conn, %{"slug" => slug}) do
     torrent = Torrents.get_torrent_by_slug!(slug)
     user = MrTorrent.Accounts.get_user!(torrent.user_id)
-    render(conn, "show.html", torrent: torrent, user: user)
+    {seeders, leechers} = MrTorrent.Peerlist.get_seeders_and_leechers(torrent)
+    render(conn, "show.html", torrent: torrent, user: user, seeders: seeders, leechers: leechers)
   end
 
   def download(conn, %{"slug" => slug}) do

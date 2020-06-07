@@ -5,16 +5,21 @@
     <tr>
       <th>Name</th>
       <th>Total size</th>
-      <th></th>
+      <th>Seeders</th>
+      <th>Leechers</th>
+      <th>Download</th>
     </tr>
-    </thead>
-    <tbody>
+  </thead>
+  <tbody>
   <%= for torrent <- @torrents do %>
-      <tr>
-        <td><%= link torrent.name, to: Routes.torrent_path(@conn, :show, torrent) %></td>
-        <td>N/A</td>
-        <td><a href="<%= Routes.torrent_path(@conn, :download, torrent) %>">DOWNLOAD</a></td>
+    <% {seeders, leechers} = MrTorrent.Peerlist.get_seeders_and_leechers(torrent) %>
+    <tr>
+      <td><%= link torrent.name, to: Routes.torrent_path(@conn, :show, torrent) %></td>
+      <td><%= total_size(torrent) %></td>
+      <td><%= seeders %></td>
+      <td><%= leechers %></td>
+      <td><a href="<%= Routes.torrent_path(@conn, :download, torrent) %>">Download .torrent</a></td>
     </tr>
-<% end %>
+  <% end %>
   </tbody>
 </table>
