@@ -6,10 +6,10 @@ defmodule MrTorrent.Repo.Migrations.CreateTorrents do
       add :name, :string
       add :slug, :citext
 
-      add :files, {:array, :map}
-      add :piece_length, :integer
-      add :pieces, :binary
+      add :info, :binary
       add :info_hash, :binary
+
+      add :total_size, :integer
 
       add :user_id, references(:users, on_delete: :nothing)
 

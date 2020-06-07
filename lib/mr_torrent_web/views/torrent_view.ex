@@ -14,7 +14,7 @@ defmodule MrTorrentWeb.TorrentView do
   end
 
   def total_size(torrent) do
-    Enum.reduce(torrent.files, 0, fn file, acc -> file.length + acc end)
+    Enum.reduce(torrent.files, 0, fn file, acc -> file.size + acc end)
     |> format_file_size
   end
 

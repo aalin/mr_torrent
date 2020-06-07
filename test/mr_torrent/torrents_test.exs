@@ -11,7 +11,7 @@ defmodule MrTorrent.TorrentsTest do
 
     test "list_torrents/0 returns all torrents" do
       torrent = torrent_fixture()
-      assert Torrents.list_torrents() == [torrent]
+      assert Enum.map(Torrents.list_torrents(), fn t -> t.id end) == [torrent.id]
     end
 
     test "get_torrent!/1 returns the torrent with given id" do
@@ -28,11 +28,11 @@ defmodule MrTorrent.TorrentsTest do
 
       assert torrent.name == "debian-10.4.0-amd64-netinst.iso"
 
-      assert torrent.files == [
-               %{length: 352_321_536, path: ["debian-10.4.0-amd64-netinst.iso"]}
-             ]
+      assert [
+               %{size: 352_321_536, path: ["debian-10.4.0-amd64-netinst.iso"]}
+             ] = torrent.files
 
-      assert torrent.piece_length == 1024 * 256
+      assert torrent.total_size == 352_321_536
     end
 
     test "create_torrent/2 with a valid multifile torrent creates it" do
@@ -44,31 +44,31 @@ defmodule MrTorrent.TorrentsTest do
 
       assert torrent.name == "gd1967-07-23.aud.sorochty.125462.flac16"
 
-      assert torrent.files == [
-               %{length: 56821, path: ["ATheDeadBook.jpg"]},
-               %{length: 3339, path: ["ATheDeadBook_thumb.jpg"]},
-               %{length: 67229, path: ["BFlexi-disc.jpg"]},
-               %{length: 5630, path: ["BFlexi-disc_thumb.jpg"]},
-               %{length: 61336, path: ["CNealCassadyMugshot.jpg"]},
-               %{length: 3312, path: ["CNealCassadyMugshot_thumb.jpg"]},
-               %{length: 20156, path: ["TranscriptOfNealCassadysRap.htm"]},
-               %{length: 6898, path: ["__ia_thumb.jpg"]},
-               %{length: 114, path: ["gd1967-07-23.aud.sorochty.125462.flac16.ffp"]},
-               %{length: 116, path: ["gd1967-07-23.aud.sorochty.125462.flac16.md5"]},
-               %{length: 3668, path: ["gd1967-07-23.aud.sorochty.125462.flac16_meta.xml"]},
-               %{length: 118, path: ["gd67-07-23.aud.cassady.sorochty.flac16.md5"]},
-               %{length: 2906, path: ["gd67-07-23.aud.cassady.sorochty.txt"]},
-               %{length: 62_323_126, path: ["gd67-07-23d1t1.aud.flac"]},
-               %{length: 17_641_472, path: ["gd67-07-23d1t1.aud.mp3"]},
-               %{length: 8_968_304, path: ["gd67-07-23d1t1.aud.ogg"]},
-               %{length: 11266, path: ["gd67-07-23d1t1.aud.png"]},
-               %{length: 65_199_823, path: ["gd67-07-23d1t2.aud.flac"]},
-               %{length: 15_015_424, path: ["gd67-07-23d1t2.aud.mp3"]},
-               %{length: 7_807_069, path: ["gd67-07-23d1t2.aud.ogg"]},
-               %{length: 11870, path: ["gd67-07-23d1t2.aud.png"]}
-             ]
+      assert [
+               %{size: 56821, path: ["ATheDeadBook.jpg"]},
+               %{size: 3339, path: ["ATheDeadBook_thumb.jpg"]},
+               %{size: 67229, path: ["BFlexi-disc.jpg"]},
+               %{size: 5630, path: ["BFlexi-disc_thumb.jpg"]},
+               %{size: 61336, path: ["CNealCassadyMugshot.jpg"]},
+               %{size: 3312, path: ["CNealCassadyMugshot_thumb.jpg"]},
+               %{size: 20156, path: ["TranscriptOfNealCassadysRap.htm"]},
+               %{size: 6898, path: ["__ia_thumb.jpg"]},
+               %{size: 114, path: ["gd1967-07-23.aud.sorochty.125462.flac16.ffp"]},
+               %{size: 116, path: ["gd1967-07-23.aud.sorochty.125462.flac16.md5"]},
+               %{size: 3668, path: ["gd1967-07-23.aud.sorochty.125462.flac16_meta.xml"]},
+               %{size: 118, path: ["gd67-07-23.aud.cassady.sorochty.flac16.md5"]},
+               %{size: 2906, path: ["gd67-07-23.aud.cassady.sorochty.txt"]},
+               %{size: 62_323_126, path: ["gd67-07-23d1t1.aud.flac"]},
+               %{size: 17_641_472, path: ["gd67-07-23d1t1.aud.mp3"]},
+               %{size: 8_968_304, path: ["gd67-07-23d1t1.aud.ogg"]},
+               %{size: 11266, path: ["gd67-07-23d1t1.aud.png"]},
+               %{size: 65_199_823, path: ["gd67-07-23d1t2.aud.flac"]},
+               %{size: 15_015_424, path: ["gd67-07-23d1t2.aud.mp3"]},
+               %{size: 7_807_069, path: ["gd67-07-23d1t2.aud.ogg"]},
+               %{size: 11870, path: ["gd67-07-23d1t2.aud.png"]}
+             ] = torrent.files
 
-      assert torrent.piece_length == 1024 * 512
+      assert torrent.total_size == 177_209_997
     end
 
     test "create_torrent/2 with invalid data returns error changeset" do

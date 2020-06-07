@@ -10,8 +10,8 @@ defmodule MrTorrent.Torrents do
     Repo.all(Torrent)
   end
 
-  def get_torrent!(id), do: Repo.get!(Torrent, id)
-  def get_torrent_by_slug!(slug), do: Repo.get_by!(Torrent, slug: slug)
+  def get_torrent!(id), do: Repo.one!(Torrent.find_torrent_query(id))
+  def get_torrent_by_slug!(slug), do: Repo.one(Torrent.find_torrent_by_slug_query(slug))
 
   def new_torrent do
     Torrent.new_changeset(%Torrent{})
