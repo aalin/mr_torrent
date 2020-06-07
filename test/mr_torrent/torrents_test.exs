@@ -22,7 +22,7 @@ defmodule MrTorrent.TorrentsTest do
     test "create_torrent/2 with a valid torrent creates it" do
       assert {:ok, %Torrent{} = torrent} =
                MrTorrent.Torrents.create_torrent(
-                 valid_torrent_upload(),
+                 %{"uploaded_file" => valid_torrent_upload()},
                  user_fixture()
                )
 
@@ -38,7 +38,7 @@ defmodule MrTorrent.TorrentsTest do
     test "create_torrent/2 with a valid multifile torrent creates it" do
       assert {:ok, %Torrent{} = torrent} =
                MrTorrent.Torrents.create_torrent(
-                 valid_multifile_torrent_upload(),
+                 %{"uploaded_file" => valid_multifile_torrent_upload()},
                  user_fixture()
                )
 
@@ -74,7 +74,7 @@ defmodule MrTorrent.TorrentsTest do
     test "create_torrent/2 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} =
                MrTorrent.Torrents.create_torrent(
-                 invalid_torrent_upload(),
+                 %{"uploaded_file" => invalid_torrent_upload()},
                  user_fixture()
                )
     end

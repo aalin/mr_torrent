@@ -13,9 +13,12 @@ defmodule MrTorrent.Repo.Migrations.CreateTorrents do
 
       add :user_id, references(:users, on_delete: :nothing)
 
+      add :description, :text
+
       timestamps()
     end
 
+    create index(:torrents, [:user_id])
     create unique_index(:torrents, [:info_hash])
   end
 end

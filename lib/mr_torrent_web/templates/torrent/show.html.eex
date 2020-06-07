@@ -16,11 +16,13 @@
   <dt>Files</dt>
   <dd>
     <ul class="files-list">
-      <%= for %{:path => path, :length => length} <- @torrent.files do %>
+      <%= for %{:path => path, :size => length} <- @torrent.files do %>
         <li><%= path %> (<%= format_file_size(length) %>)</li>
       <% end %>
     </ul>
   </dd>
+  <dt>Description</dt>
+  <dd><%= @torrent.description %></dd>
 </dl>
 
 <span><%= link "Back", to: Routes.torrent_path(@conn, :index) %></span>

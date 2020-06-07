@@ -48,3 +48,9 @@ label {
 dt {
   font-weight: bold;
 }
+
+.description-input {
+  width: 100%;
+  max-width: 50em;
+  height: 10em;
+}

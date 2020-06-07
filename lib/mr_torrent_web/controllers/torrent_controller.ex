@@ -12,8 +12,8 @@ defmodule MrTorrentWeb.TorrentController do
     render(conn, "new.html", changeset: Torrents.new_torrent())
   end
 
-  def create(conn, %{"file" => file}) do
-    case Torrents.create_torrent(file, conn.assigns.current_user) do
+  def create(conn, params) do
+    case Torrents.create_torrent(params["torrent"], conn.assigns.current_user) do
       {:ok, torrent} ->
         conn
         |> put_flash(:info, "Torrent created successfully.")

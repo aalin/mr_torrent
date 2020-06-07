@@ -13,6 +13,7 @@ defmodule MrTorrent.Torrents.Torrent do
     field :info, :binary
     field :info_hash, :binary
     field :total_size, :integer
+    field :description, :string
 
     field :uploaded_file, :binary, virtual: true
     field :decoded_info, :map, virtual: true
@@ -47,14 +48,17 @@ defmodule MrTorrent.Torrents.Torrent do
     change(torrent, attrs)
   end
 
-  def create_from_file(path, user) do
+  def create_from_file(params, user) do
     torrent = %MrTorrent.Torrents.Torrent{}
-    create_changeset(torrent, path, user)
+    create_changeset(torrent, params, user)
   end
 
-  def create_changeset(torrent, path, user) do
+  def create_changeset(torrent, params, user) do
+    %Plug.Upload{path: path} = Map.get(params, "uploaded_file")
+
     changeset =
       change(torrent)
+      |> cast(params, [:description])
       |> put_change(:user_id, user.id)
       |> decode_and_validate_file(path)
 
@@ -63,11 +67,11 @@ defmodule MrTorrent.Torrents.Torrent do
       |> set_fields_from_decoded_info
       |> set_info_hash
       |> add_slug
-      |> validate_required([:name, :slug, :info, :info_hash, :user_id])
+      |> validate_required([:name, :slug, :info, :info_hash, :total_size, :user_id])
       |> validate_length(:files, min: 1)
+      |> validate_number(:total_size, greater_than: 0)
       |> unsafe_validate_unique(:info_hash, MrTorrent.Repo)
       |> unique_constraint(:info_hash)
-      |> validate_required([:slug])
       |> unsafe_validate_unique(:slug, MrTorrent.Repo)
       |> unique_constraint(:slug)
     else

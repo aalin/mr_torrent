@@ -21,7 +21,7 @@ defmodule MrTorrentWeb.TorrentControllerTest do
 
   describe "create torrent" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.torrent_path(conn, :create), file: valid_torrent_upload())
+      conn = post(conn, Routes.torrent_path(conn, :create), torrent: %{ uploaded_file: valid_torrent_upload() })
 
       assert %{slug: slug} = redirected_params(conn)
       assert redirected_to(conn) == Routes.torrent_path(conn, :show, slug)

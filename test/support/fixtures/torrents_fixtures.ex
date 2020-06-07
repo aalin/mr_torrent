@@ -17,9 +17,11 @@ defmodule MrTorrent.TorrentsFixtures do
   end
 
   def torrent_fixture(opts \\ %{}) do
+    upload = Map.get(opts, :upload) || valid_torrent_upload()
+
     {:ok, torrent} =
       MrTorrent.Torrents.create_torrent(
-        Map.get(opts, :upload) || valid_torrent_upload(),
+        %{"uploaded_file" => upload},
         Map.get(opts, :user) || user_fixture()
       )
 

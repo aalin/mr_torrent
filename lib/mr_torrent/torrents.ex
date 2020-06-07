@@ -17,8 +17,8 @@ defmodule MrTorrent.Torrents do
     Torrent.new_changeset(%Torrent{})
   end
 
-  def create_torrent(%Plug.Upload{path: path}, %MrTorrent.Accounts.User{} = user) do
-    Torrent.create_from_file(path, user)
+  def create_torrent(params, %MrTorrent.Accounts.User{} = user) do
+    Torrent.create_from_file(params, user)
     |> Repo.insert()
   end
 
