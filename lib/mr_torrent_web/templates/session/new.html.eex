@@ -7,13 +7,17 @@
     </div>
   <% end %>
 
-  <%= label f, :username %>
-  <%= text_input f, :username %>
+  <div class="form-field">
+    <%= label f, :username %>
+    <%= text_input f, :username %>
+  </div>
 
-  <%= label f, :password %>
-  <%= password_input f, :password %>
+  <div class="form-field">
+    <%= label f, :password %>
+    <%= password_input f, :password %>
+  </div>
 
-  <div>
+  <div class="form-field">
     <%= submit "Log in" %>
   </div>
 <% end %>

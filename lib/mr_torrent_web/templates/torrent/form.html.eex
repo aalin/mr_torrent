@@ -3,18 +3,20 @@
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
     </div>
-    <ul
+    <ul>
       <%= for {field, {message, _validation}} <- @changeset.errors do %>
         <li><%= Atom.to_string(field) %>: <%= message %></li>
-    <% end %>
+      <% end %>
     </ul>
   <% end %>
 
 
-  <%= label f, :file %>
-  <%= file_input f, :file %>
+  <div class="form-field">
+    <%= label f, :file %>
+    <%= file_input f, :file %>
+  </div>
 
-  <div>
+  <div class="form-field">
     <%= submit "Upload" %>
   </div>
 <% end %>

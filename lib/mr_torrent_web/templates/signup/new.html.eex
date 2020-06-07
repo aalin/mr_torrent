@@ -7,23 +7,29 @@
     </div>
   <% end %>
 
-  <%= label f, :username %>
-  <%= text_input f, :username, required: true %>
-  <%= error_tag f, :username %>
+  <div class="form-field">
+    <%= label f, :username %>
+    <%= text_input f, :username, required: true %>
+    <%= error_tag f, :username %>
+  </div>
 
-  <%= label f, :email %>
-  <%= text_input f, :email, required: true %>
-  <%= error_tag f, :email %>
+  <div class="form-field">
+    <%= label f, :email %>
+    <%= text_input f, :email, required: true %>
+    <%= error_tag f, :email %>
+  </div>
 
-  <%= label f, :password %>
-  <%= password_input f, :password, required: true %>
-  <%= error_tag f, :password %>
+  <div class="form-field">
+    <%= label f, :password %>
+    <%= password_input f, :password, required: true %>
+    <%= error_tag f, :password %>
+  </div>
 
-  <div>
+  <div class="form-field">
     <%= submit "Register" %>
   </div>
 <% end %>
 
 <p>
-  <%= link "Login", to: Routes.session_path(@conn, :new) %> |
+  <%= link "Login", to: Routes.session_path(@conn, :new) %>
 </p>

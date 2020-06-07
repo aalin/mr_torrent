@@ -1,0 +1,40 @@
+nav ul {
+  list-style-type: none;
+  margin: 1em 0;
+  padding: 0;
+}
+
+nav li {
+  display: inline-block;
+}
+
+th {
+  text-align: left;
+}
+
+th.align-center, td.align-center {
+  text-align: center;
+}
+
+th.align-right, td.align-right {
+  text-align: right;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: .5em;
+}
+
+label {
+  display: block;
+  margin: .5em 0;
+}
+
+.form-field {
+  margin: 1em 0;
+}
