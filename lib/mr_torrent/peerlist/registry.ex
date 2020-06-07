@@ -21,11 +21,23 @@ defmodule MrTorrent.Peerlist.Registry do
     GenServer.call(server, {:get_peerlist, torrent_id})
   end
 
+  def get_or_create_peerlist(server, torrent_id) when is_integer(torrent_id) do
+    GenServer.call(server, {:get_or_create_peerlist, torrent_id})
+  end
+
   def handle_call({:has_peerlist?, torrent_id}, _from, {peerlists, refs}) do
     {:reply, Map.has_key?(peerlists, torrent_id), {peerlists, refs}}
   end
 
   def handle_call({:get_peerlist, torrent_id}, _from, {peerlists, refs}) do
+    if peerlist = Map.get(peerlists, torrent_id) do
+      {:reply, {:ok, peerlist}, {peerlists, refs}}
+    else
+      {:reply, {:error, :peerlist_not_found}, {peerlists, refs}}
+    end
+  end
+
+  def handle_call({:get_or_create_peerlist, torrent_id}, _from, {peerlists, refs}) do
     if peerlist = Map.get(peerlists, torrent_id) do
       {:reply, {:ok, peerlist}, {peerlists, refs}}
     else

@@ -20,8 +20,12 @@ defmodule MrTorrent.Peerlist do
   end
 
   def get_seeders_and_leechers(%MrTorrent.Torrents.Torrent{id: torrent_id}) do
-    {:ok, server} = Registry.get_peerlist(Registry, torrent_id)
-    get_seeders_and_leechers(server)
+    case Registry.get_peerlist(Registry, torrent_id) do
+      {:ok, server} ->
+        get_seeders_and_leechers(server)
+      {:error, :peerlist_not_found} ->
+        {0, 0}
+    end
   end
 
   def get_peers(server) do
@@ -29,7 +33,7 @@ defmodule MrTorrent.Peerlist do
   end
 
   def announce(%MrTorrent.Torrents.Torrent{id: torrent_id}, ip, params) do
-    {:ok, server} = Registry.get_peerlist(Registry, torrent_id)
+    {:ok, server} = Registry.get_or_create_peerlist(Registry, torrent_id)
 
     update_peer(server, ip, params)
 
