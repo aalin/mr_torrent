@@ -26,6 +26,8 @@
     <%= textarea f, :description, class: "description-input" %>
   </div>
 
+  <p>After uploading, you need to download the .torrent and put it in the same directory as your data and add it to your torrent client</p>
+
   <div class="form-field">
     <%= submit "Upload" %>
   </div>
