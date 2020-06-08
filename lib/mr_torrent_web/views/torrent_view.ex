@@ -14,8 +14,7 @@ defmodule MrTorrentWeb.TorrentView do
   end
 
   def total_size(torrent) do
-    Enum.reduce(torrent.files, 0, fn file, acc -> file.size + acc end)
-    |> format_file_size
+    torrent.total_size |> format_file_size
   end
 
   def autoupdate_torrent_field(torrent_id, field_name, initial_content \\ "") do
