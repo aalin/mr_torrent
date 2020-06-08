@@ -94,4 +94,87 @@ defmodule MrTorrent.Torrents do
         {:error, "Could not verify token"}
     end
   end
+
+  alias MrTorrent.Torrents.Category
+
+  def category_tree do
+    find_category_children(Repo.all(Category), %{id: nil})
+  end
+
+  defp find_category_children(categories, category) do
+    children = Enum.filter(categories, fn (cat) -> cat.parent_id == category.id end)
+
+    Enum.reduce(children, %{}, fn (child, acc) ->
+      Map.put(acc, child, find_category_children(categories, child))
+    end)
+  end
+
+  @doc """
+  Gets a single category.
+
+  Raises `Ecto.NoResultsError` if the Category does not exist.
+
+  ## Examples
+
+      iex> get_category!(123)
+      %Category{}
+
+      iex> get_category!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_category!(id), do: Repo.get!(Category, id)
+
+  @doc """
+  Creates a category.
+
+  ## Examples
+
+      iex> create_category(%{field: value})
+      {:ok, %Category{}}
+
+      iex> create_category(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_category(attrs \\ %{}) do
+    %Category{}
+    |> Category.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_category(%Category{} = category, attrs) do
+    category
+    |> Category.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a category.
+
+  ## Examples
+
+      iex> delete_category(category)
+      {:ok, %Category{}}
+
+      iex> delete_category(category)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_category(%Category{} = category) do
+    Repo.delete(category)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking category changes.
+
+  ## Examples
+
+      iex> change_category(category)
+      %Ecto.Changeset{data: %Category{}}
+
+  """
+  def change_category(%Category{} = category, attrs \\ %{}) do
+    Category.changeset(category, attrs)
+  end
 end

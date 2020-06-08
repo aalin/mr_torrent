@@ -20,6 +20,7 @@ defmodule MrTorrent.Torrents.Torrent do
 
     belongs_to :user, MrTorrent.Accounts.User
     has_many :files, MrTorrent.Torrents.TorrentFile
+    belongs_to :category, MrTorrent.Torrents.Category
 
     timestamps()
   end
@@ -27,13 +28,13 @@ defmodule MrTorrent.Torrents.Torrent do
   def find_torrent_query(id) do
     from torrent in MrTorrent.Torrents.Torrent,
       where: [id: ^id],
-      preload: :files
+      preload: [:files, :category]
   end
 
   def find_torrent_by_slug_query(slug) do
     from torrent in MrTorrent.Torrents.Torrent,
       where: [slug: ^slug],
-      preload: :files
+      preload: [:files, :category]
   end
 
   def generate_torrent_file(torrent, announce_url, comment) do
@@ -58,7 +59,7 @@ defmodule MrTorrent.Torrents.Torrent do
 
     changeset =
       change(torrent)
-      |> cast(params, [:description])
+      |> cast(params, [:description, :category_id])
       |> put_change(:user_id, user.id)
       |> decode_and_validate_file(path)
 

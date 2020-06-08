@@ -21,7 +21,7 @@ defmodule MrTorrentWeb.TorrentControllerTest do
 
   describe "create torrent" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.torrent_path(conn, :create), torrent: %{ uploaded_file: valid_torrent_upload() })
+      conn = post(conn, Routes.torrent_path(conn, :create), torrent: %{ uploaded_file: valid_torrent_upload(), category_id: category_fixture().id })
 
       assert %{slug: slug} = redirected_params(conn)
       assert redirected_to(conn) == Routes.torrent_path(conn, :show, slug)
@@ -30,10 +30,10 @@ defmodule MrTorrentWeb.TorrentControllerTest do
       assert html_response(conn, 200) =~ "<h1>debian-10.4.0-amd64-netinst.iso</h1>"
     end
 
-    #    test "renders errors when data is invalid", %{conn: conn} do
-    #      conn = post(conn, Routes.torrent_path(conn, :create), torrent: %{ file: invalid_torrent_upload() })
-    #      assert html_response(conn, 200) =~ "New Torrent"
-    #    end
+    test "renders errors when data is invalid", %{conn: conn} do
+      conn = post(conn, Routes.torrent_path(conn, :create), torrent: %{ uploaded_file: invalid_torrent_upload() })
+      assert html_response(conn, 200) =~ "Upload torrent"
+    end
   end
 
   #  describe "delete torrent" do

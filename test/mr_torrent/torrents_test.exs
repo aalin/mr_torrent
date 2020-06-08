@@ -16,13 +16,13 @@ defmodule MrTorrent.TorrentsTest do
 
     test "get_torrent!/1 returns the torrent with given id" do
       torrent = torrent_fixture()
-      assert Torrents.get_torrent!(torrent.id) == torrent
+      assert Map.delete(Torrents.get_torrent!(torrent.id), :category) == Map.delete(torrent, :category)
     end
 
     test "create_torrent/2 with a valid torrent creates it" do
       assert {:ok, %Torrent{} = torrent} =
                MrTorrent.Torrents.create_torrent(
-                 %{"uploaded_file" => valid_torrent_upload()},
+                 %{"uploaded_file" => valid_torrent_upload(), "category_id" => category_fixture().id},
                  user_fixture()
                )
 
@@ -38,7 +38,7 @@ defmodule MrTorrent.TorrentsTest do
     test "create_torrent/2 with a valid multifile torrent creates it" do
       assert {:ok, %Torrent{} = torrent} =
                MrTorrent.Torrents.create_torrent(
-                 %{"uploaded_file" => valid_multifile_torrent_upload()},
+                 %{"uploaded_file" => valid_multifile_torrent_upload(), "category_id" => category_fixture().id()},
                  user_fixture()
                )
 
@@ -176,5 +176,57 @@ defmodule MrTorrent.TorrentsTest do
 
     @tag :pending
     test "announce/3 returns an error if the user does not exist"
+  end
+
+  describe "categories" do
+    alias MrTorrent.Torrents.Category
+
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    test "category_tree/0 returns all categories" do
+      category_0 = category_fixture()
+      category_0_0 = category_fixture(parent_id: category_0.id)
+
+      assert Torrents.category_tree() == %{category_0 => %{category_0_0 => %{}}}
+    end
+
+    test "get_category!/1 returns the category with given id" do
+      category = category_fixture()
+      assert Torrents.get_category!(category.id) == category
+    end
+
+    test "create_category/1 with valid data creates a category" do
+      assert {:ok, %Category{} = category} = Torrents.create_category(@valid_attrs)
+      assert category.name == "some name"
+    end
+
+    test "create_category/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Torrents.create_category(@invalid_attrs)
+    end
+
+    test "update_category/2 with valid data updates the category" do
+      category = category_fixture()
+      assert {:ok, %Category{} = category} = Torrents.update_category(category, @update_attrs)
+      assert category.name == "some updated name"
+    end
+
+    test "update_category/2 with invalid data returns error changeset" do
+      category = category_fixture()
+      assert {:error, %Ecto.Changeset{}} = Torrents.update_category(category, @invalid_attrs)
+      assert category == Torrents.get_category!(category.id)
+    end
+
+    test "delete_category/1 deletes the category" do
+      category = category_fixture()
+      assert {:ok, %Category{}} = Torrents.delete_category(category)
+      assert_raise Ecto.NoResultsError, fn -> Torrents.get_category!(category.id) end
+    end
+
+    test "change_category/1 returns a category changeset" do
+      category = category_fixture()
+      assert %Ecto.Changeset{} = Torrents.change_category(category)
+    end
   end
 end
