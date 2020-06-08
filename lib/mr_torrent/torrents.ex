@@ -102,11 +102,11 @@ defmodule MrTorrent.Torrents do
   end
 
   defp find_category_children(categories, category) do
-    children = Enum.filter(categories, fn (cat) -> cat.parent_id == category.id end)
-
-    Enum.reduce(children, %{}, fn (child, acc) ->
-      Map.put(acc, child, find_category_children(categories, child))
-    end)
+    categories
+    |> Enum.filter(fn (cat) -> cat.parent_id == category.id end)
+    |> Enum.reduce(%{}, fn (child, acc) ->
+         Map.put(acc, child, find_category_children(categories, child))
+       end)
   end
 
   @doc """

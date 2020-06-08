@@ -55,20 +55,19 @@ defmodule MrTorrent.Torrents.Torrent do
   end
 
   def create_changeset(torrent, params, user) do
-    %Plug.Upload{path: path} = Map.get(params, "uploaded_file")
-
     changeset =
-      change(torrent)
+      torrent
       |> cast(params, [:description, :category_id])
+      |> put_change(:uploaded_file, params["uploaded_file"])
       |> put_change(:user_id, user.id)
-      |> decode_and_validate_file(path)
+      |> decode_and_validate_file
 
     if changeset.valid? do
       changeset
       |> set_fields_from_decoded_info
       |> set_info_hash
       |> add_slug
-      |> validate_required([:name, :slug, :info, :info_hash, :total_size, :user_id])
+      |> validate_required([:name, :slug, :info, :info_hash, :total_size, :user_id, :category_id])
       |> validate_length(:files, min: 1)
       |> validate_number(:total_size, greater_than: 0)
       |> unsafe_validate_unique(:info_hash, MrTorrent.Repo)
@@ -80,13 +79,19 @@ defmodule MrTorrent.Torrents.Torrent do
     end
   end
 
-  defp decode_and_validate_file(changeset, path) do
-    case decode_file(path) do
-      {:ok, info} ->
-        put_change(changeset, :decoded_info, info)
+  defp decode_and_validate_file(changeset) do
+    case get_change(changeset, :uploaded_file) do
+      %Plug.Upload{path: path} ->
+        case decode_file(path) do
+          {:ok, info} ->
+            put_change(changeset, :decoded_info, info)
 
-      {:error, message} ->
-        add_error(changeset, :uploaded_file, message)
+          {:error, message} ->
+            add_error(changeset, :uploaded_file, message)
+        end
+
+      _ ->
+        add_error(changeset, :uploaded_file, "is invalid")
     end
   end
 

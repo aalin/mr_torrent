@@ -23,4 +23,22 @@ defmodule MrTorrentWeb.TorrentView do
       "data-torrent-field": field_name
     )
   end
+
+  def categories_for_select do
+    traverse_category_tree(MrTorrent.Torrents.category_tree)
+    |> Enum.sort_by(fn {path, _id} -> path end)
+  end
+
+  defp traverse_category_tree(tree, path \\ []) do
+    Enum.reduce(tree, [], fn ({category, children}, acc) ->
+      current_path = path ++ [category.name]
+      item = {Enum.join(current_path, " / "), category.id}
+
+      if Enum.empty?(children) do
+        [item | acc]
+      else
+        acc ++ traverse_category_tree(children, current_path)
+      end
+    end)
+  end
 end

@@ -17,6 +17,11 @@
   </div>
 
   <div class="form-field">
+    <%= label f, :category %>
+    <%= select f, :category_id, ["Choose category" | categories_for_select()] %>
+  </div>
+
+  <div class="form-field">
     <%= label f, :description, "Description" %>
     <%= textarea f, :description, class: "description-input" %>
   </div>

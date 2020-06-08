@@ -11,12 +11,20 @@ defmodule MrTorrent.TorrentsTest do
 
     test "list_torrents/0 returns all torrents" do
       torrent = torrent_fixture()
-      assert Enum.map(Torrents.list_torrents(), fn t -> t.id end) == [torrent.id]
+      assert Enum.map(Torrents.list_torrents(), &delete_keys_for_comparison(&1)) == [delete_keys_for_comparison(torrent)]
     end
 
     test "get_torrent!/1 returns the torrent with given id" do
       torrent = torrent_fixture()
-      assert Map.delete(Torrents.get_torrent!(torrent.id), :category) == Map.delete(torrent, :category)
+      assert delete_keys_for_comparison(Torrents.get_torrent!(torrent.id)) == delete_keys_for_comparison(torrent)
+      assert Enum.count(torrent.files) == 1
+    end
+
+    defp delete_keys_for_comparison(torrent) do
+      torrent
+      |> Map.delete(:category)
+      |> Map.delete(:files)
+      |> Map.delete(:uploaded_file)
     end
 
     test "create_torrent/2 with a valid torrent creates it" do
