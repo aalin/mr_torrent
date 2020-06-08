@@ -3,7 +3,7 @@ defmodule MrTorrent.Repo.Migrations.AddCategoryToTorrents do
 
   def change do
     alter table(:torrents) do
-      add :category_id, :integer, null: false
+      add :category_id, references(:categories, on_delete: :nilify_all)
     end
   end
 end
