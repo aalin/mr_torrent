@@ -54,3 +54,23 @@ dt {
   max-width: 50em;
   height: 10em;
 }
+
+.alert:empty {
+  display: none;
+}
+
+.alert-info {
+  border: 1px solid #0c0;
+  padding: 1em;
+  margin: 1em 0;
+  color: #0c0;
+  background: #9f9;
+}
+
+.alert-danger {
+  border: 1px solid #c00;
+  padding: 1em;
+  margin: 1em 0;
+  color: #c00;
+  background: #f99;
+}
