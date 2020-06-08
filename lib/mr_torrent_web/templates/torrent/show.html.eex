@@ -17,7 +17,7 @@
   <dd>
     <ul class="files-list">
       <%= for %{:path => path, :size => length} <- @torrent.files do %>
-        <li><%= path %> (<%= format_file_size(length) %>)</li>
+        <li><%= Enum.join(path, "/") %> (<%= format_file_size(length) %>)</li>
       <% end %>
     </ul>
   </dd>
