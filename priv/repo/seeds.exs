@@ -9,3 +9,7 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+IO.puts "Creating default category"
+
+MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: "Default category"})
