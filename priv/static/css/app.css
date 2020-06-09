@@ -93,11 +93,16 @@ dt {
   margin: .5em;
 }
 
-.pagination li a {
+.pagination li a,
+.pagination li span {
   display: inline-block;
   min-width: 2em;
   text-align: center;
   padding: .5em;
+}
+
+.pagination li.active {
+  font-weight: bold;
 }
 
 .pagination li:first-child {

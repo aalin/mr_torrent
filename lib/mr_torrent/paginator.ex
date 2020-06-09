@@ -32,6 +32,8 @@ defmodule MrTorrent.Paginator do
   end
 
   def paginate(query, page, opts \\ []) do
+    page = max(page, 1)
+
     results_per_page = Keyword.get(opts, :results_per_page, @default_results_per_page)
     results = execute_query(query, page, results_per_page)
     total_results = count_total_results(query)
