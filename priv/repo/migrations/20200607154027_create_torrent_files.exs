@@ -4,7 +4,7 @@ defmodule MrTorrent.Repo.Migrations.CreateTorrentFiles do
   def change do
     create table(:torrent_files) do
       add :path, {:array, :string}
-      add :size, :integer
+      add :size, :bigint
       add :torrent_id, references(:torrents, on_delete: :delete_all)
 
       timestamps()

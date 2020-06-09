@@ -9,7 +9,7 @@ defmodule MrTorrent.Repo.Migrations.CreateTorrents do
       add :info, :binary
       add :info_hash, :binary
 
-      add :total_size, :integer
+      add :total_size, :bigint
 
       add :user_id, references(:users, on_delete: :nothing)
 
