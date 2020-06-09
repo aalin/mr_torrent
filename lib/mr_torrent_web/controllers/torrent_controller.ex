@@ -3,8 +3,8 @@ defmodule MrTorrentWeb.TorrentController do
 
   alias MrTorrent.Torrents
 
-  def index(conn, _params) do
-    torrents = Torrents.list_torrents()
+  def index(conn, params) do
+    torrents = Torrents.list_torrents(params)
     render(conn, "index.html", torrents: torrents)
   end
 

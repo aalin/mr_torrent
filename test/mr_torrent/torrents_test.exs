@@ -14,6 +14,17 @@ defmodule MrTorrent.TorrentsTest do
       assert Enum.map(Torrents.list_torrents(), &delete_keys_for_comparison(&1)) == [delete_keys_for_comparison(torrent)]
     end
 
+    test "list_torrents/1 filters torrents" do
+      torrent = torrent_fixture(%{ "name" => "hello" })
+
+      id = torrent.id
+
+      assert torrent.name == "debian-10.4.0-amd64-netinst.iso"
+      assert [%{id: ^id}] = Torrents.list_torrents(%{ "query" => "debian" })
+      assert [%{id: ^id}] = Torrents.list_torrents(%{ "category_id" => Integer.to_string(torrent.category_id) })
+      assert [] == Torrents.list_torrents(%{ "query" => "lol" })
+    end
+
     test "get_torrent!/1 returns the torrent with given id" do
       torrent = torrent_fixture()
       assert delete_keys_for_comparison(Torrents.get_torrent!(torrent.id)) == delete_keys_for_comparison(torrent)
@@ -193,11 +204,27 @@ defmodule MrTorrent.TorrentsTest do
     @update_attrs %{name: "some updated name"}
     @invalid_attrs %{name: nil}
 
-    test "category_tree/0 returns all categories" do
+    test "category_tree/0 returns a nested map of categories" do
       category_0 = category_fixture()
       category_0_0 = category_fixture(parent_id: category_0.id)
 
       assert Torrents.category_tree() == %{category_0 => %{category_0_0 => %{}}}
+    end
+
+    test "find_subcategory_ids/1 returns all subcategory ids" do
+      category_0 = category_fixture(name: "0")
+      _category_0_0 = category_fixture(name: "0.0", parent_id: category_0.id)
+      category_0_1 = category_fixture(name: "0.1", parent_id: category_0.id)
+      category_0_1_0 = category_fixture(name: "0.1.0", parent_id: category_0_1.id)
+      category_0_1_1 = category_fixture(name: "0.1.1", parent_id: category_0_1.id)
+      category_0_1_1_0 = category_fixture(name: "0.1.1.0", parent_id: category_0_1_1.id)
+
+      assert Torrents.find_subcategory_ids(category_0_1.id) == [
+        category_0_1.id,
+        category_0_1_0.id,
+        category_0_1_1.id,
+        category_0_1_1_0.id,
+      ]
     end
 
     test "get_category!/1 returns the category with given id" do

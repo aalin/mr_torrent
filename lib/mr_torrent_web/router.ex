@@ -36,7 +36,7 @@ defmodule MrTorrentWeb.Router do
   scope "/", MrTorrentWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/torrents", TorrentController, :index
+    get "/browse", TorrentController, :index
     get "/torrents/:slug", TorrentController, :show
     get "/download/:slug", TorrentController, :download
     get "/upload", TorrentController, :new

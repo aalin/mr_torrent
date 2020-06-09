@@ -1,4 +1,24 @@
-<h1>Listing Torrents</h1>
+<h1>Browse torrents</h1>
+
+<%= form_for @conn, Routes.torrent_path(@conn, :index), [method: :get], fn f -> %>
+  <fieldset>
+    <legend>Filter</legend>
+
+    <div class="form-field">
+      <%= label f, :query %>
+      <%= text_input f, :query, required: true %>
+    </div>
+
+    <div class="form-field">
+      <%= label f, :category %>
+      <%= select f, :category_id, [{"Choose category", 0} | categories_for_select()] %>
+    </div>
+
+    <div class="form-field">
+      <%= submit "Search" %>
+    </div>
+  </fieldset>
+<% end %>
 
 <table>
   <thead>

@@ -10,6 +10,25 @@ defmodule MrTorrent.Torrents do
     Repo.all(Torrent)
   end
 
+  def list_torrents(%{} = params) do
+    Torrent.filter_torrents_query(
+      query: params["query"],
+      category_ids: find_category_ids_for_filter(params["category_id"])
+    ) |> Repo.all()
+  end
+
+  defp find_category_ids_for_filter(nil), do: nil
+
+  defp find_category_ids_for_filter(category_id)
+       when is_number(category_id) do
+    find_subcategory_ids(category_id)
+  end
+
+  defp find_category_ids_for_filter(category_id)
+       when is_binary(category_id) do
+    find_category_ids_for_filter(String.to_integer(category_id))
+  end
+
   def get_torrent!(id), do: Repo.one!(Torrent.find_torrent_query(id))
   def get_torrent_by_slug!(slug), do: Repo.one(Torrent.find_torrent_by_slug_query(slug))
 
@@ -98,15 +117,39 @@ defmodule MrTorrent.Torrents do
   alias MrTorrent.Torrents.Category
 
   def category_tree do
-    find_category_children(Repo.all(Category), %{id: nil})
+    build_category_tree(Repo.all(Category), %{id: nil})
   end
 
-  defp find_category_children(categories, category) do
+  defp build_category_tree(categories, category) do
     categories
     |> Enum.filter(fn (cat) -> cat.parent_id == category.id end)
     |> Enum.reduce(%{}, fn (child, acc) ->
-         Map.put(acc, child, find_category_children(categories, child))
+         Map.put(acc, child, build_category_tree(categories, child))
        end)
+  end
+
+  def find_subcategory_ids(category_id) do
+    categories = Repo.all(Category)
+    category = Enum.find(categories, & &1.id == category_id)
+
+    find_category_children(categories, category)
+    |> List.flatten
+    |> Enum.sort
+  end
+
+  def find_category_children(categories, nil), do: []
+
+  def find_category_children(categories, category) do
+    children =
+      categories
+      |> Enum.filter(& &1.parent_id == category.id)
+      |> Enum.map(fn child -> find_category_children(categories, child) end)
+
+    if Enum.empty?(children) do
+      [category.id]
+    else
+      [category.id | children]
+    end
   end
 
   @doc """
