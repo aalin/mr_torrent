@@ -4,18 +4,20 @@
   <fieldset>
     <legend>Filter</legend>
 
-    <div class="form-field">
-      <%= label f, :query %>
-      <%= text_input f, :query %>
-    </div>
+    <div class="form-flex">
+      <div class="form-field">
+        <%= label f, :query %>
+        <%= text_input f, :query %>
+      </div>
 
-    <div class="form-field">
-      <%= label f, :category %>
-      <%= select f, :category_id, [{"Choose category", 0} | categories_for_select()] %>
-    </div>
+      <div class="form-field">
+        <%= label f, :category %>
+        <%= select f, :category_id, [{"Choose category", 0} | categories_for_select()] %>
+      </div>
 
-    <div class="form-field">
-      <%= submit "Search" %>
+      <div class="form-field">
+        <%= submit "Search" %>
+      </div>
     </div>
   </fieldset>
 <% end %>

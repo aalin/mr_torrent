@@ -20,7 +20,7 @@ defmodule MrTorrentWeb.PaginatorHelper do
 
     content_tag(:li, disabled: disabled) do
       link to: "?#{params}", rel: "prev" do
-        "Previous"
+        "Prev"
       end
     end
   end

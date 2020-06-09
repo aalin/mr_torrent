@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 nav ul {
   list-style-type: none;
   margin: 1em 0;
@@ -23,6 +27,7 @@ th.align-right, td.align-right {
 table {
   width: 100%;
   border-collapse: collapse;
+  margin: 1em 0;
 }
 
 th, td {
@@ -79,12 +84,39 @@ dt {
   list-style-type: none;
   padding: 0;
   margin: 1em 0;
+  text-align: center;
 }
 
 .pagination li {
   display: inline-block;
   border: 1px solid #ccc;
-  width: 2em;
+  margin: .5em;
+}
+
+.pagination li a {
+  display: inline-block;
+  min-width: 2em;
   text-align: center;
-  margin: .1em;
+  padding: .5em;
+}
+
+.pagination li:first-child {
+  margin-left: 0;
+}
+
+.pagination li:last-child {
+  margin-right: 0;
+}
+
+.form-flex {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.form-flex > .form-field {
+  max-width: 20em;
+  flex: 0 1 auto;
+  margin: .5em;
 }
