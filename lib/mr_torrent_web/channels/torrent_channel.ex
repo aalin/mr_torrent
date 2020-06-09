@@ -2,8 +2,12 @@ defmodule MrTorrentWeb.TorrentChannel do
   use MrTorrentWeb, :channel
 
   @impl true
-  def join("torrent:" <> id, payload, socket) do
-    {:ok, socket}
+  def join("torrent:" <> id, _payload, socket) do
+    if MrTorrent.Torrents.torrent_exists?(id) do
+      {:ok, socket}
+    else
+      {:error, "Torrent does not exist"}
+    end
   end
 
   # Channels can be used in a request/response fashion

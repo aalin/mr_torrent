@@ -22,17 +22,19 @@ defmodule MrTorrent.Torrents do
   defp find_category_ids_for_filter(nil), do: nil
 
   defp find_category_ids_for_filter(category_id)
-       when is_number(category_id) do
-    find_subcategory_ids(category_id)
-  end
-
-  defp find_category_ids_for_filter(category_id)
        when is_binary(category_id) do
     find_category_ids_for_filter(String.to_integer(category_id))
   end
 
+  defp find_category_ids_for_filter(category_id)
+       when is_number(category_id) do
+    find_subcategory_ids(category_id)
+  end
+
   def get_torrent!(id), do: Repo.one!(Torrent.find_torrent_query(id))
   def get_torrent_by_slug!(slug), do: Repo.one(Torrent.find_torrent_by_slug_query(slug))
+
+  def torrent_exists?(id), do: Repo.exists?(Torrent.find_torrent_query(id))
 
   def new_torrent do
     Torrent.new_changeset(%Torrent{})

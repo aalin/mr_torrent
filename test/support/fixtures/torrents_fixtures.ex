@@ -1,10 +1,6 @@
 defmodule MrTorrent.TorrentsFixtures do
   import MrTorrent.AccountsFixtures
 
-  defp unique_category_name() do
-    "category_" <> :crypto.strong_rand_bytes(5) |> Base.encode16()
-  end
-
   def category_fixture(attrs \\ %{}) do
     {:ok, category} =
       attrs
@@ -14,6 +10,10 @@ defmodule MrTorrent.TorrentsFixtures do
       |> MrTorrent.Torrents.create_category
 
     category
+  end
+
+  defp unique_category_name() do
+    "category_" <> :crypto.strong_rand_bytes(5) |> Base.encode16()
   end
 
   def valid_torrent_upload do

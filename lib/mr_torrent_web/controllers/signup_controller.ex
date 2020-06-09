@@ -1,8 +1,6 @@
 defmodule MrTorrentWeb.SignupController do
   use MrTorrentWeb, :controller
 
-  import Plug.Conn
-
   alias MrTorrent.Accounts
   alias MrTorrentWeb.UserAuth
 
