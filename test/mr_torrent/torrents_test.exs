@@ -208,7 +208,7 @@ defmodule MrTorrent.TorrentsTest do
       category_0 = category_fixture()
       category_0_0 = category_fixture(parent_id: category_0.id)
 
-      assert Torrents.category_tree() == %{category_0 => %{category_0_0 => %{}}}
+      assert Torrents.category_tree() == [{category_0, [{category_0_0, []}]}]
     end
 
     test "find_subcategory_ids/1 returns all subcategory ids" do

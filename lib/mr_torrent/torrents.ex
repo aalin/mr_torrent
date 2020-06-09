@@ -125,8 +125,8 @@ defmodule MrTorrent.Torrents do
   defp build_category_tree(categories, category) do
     categories
     |> Enum.filter(fn (cat) -> cat.parent_id == category.id end)
-    |> Enum.reduce(%{}, fn (child, acc) ->
-         Map.put(acc, child, build_category_tree(categories, child))
+    |> Enum.reduce([], fn (child, acc) ->
+         [{child, build_category_tree(categories, child)} | acc]
        end)
   end
 
@@ -139,9 +139,9 @@ defmodule MrTorrent.Torrents do
     |> Enum.sort
   end
 
-  def find_category_children(categories, nil), do: []
+  defp find_category_children(_categories, nil), do: []
 
-  def find_category_children(categories, category) do
+  defp find_category_children(categories, category) do
     children =
       categories
       |> Enum.filter(& &1.parent_id == category.id)

@@ -12,7 +12,7 @@
 
       <div class="form-field">
         <%= label f, :category %>
-        <%= select f, :category_id, [{"Choose category", 0} | categories_for_select()] %>
+        <%= select f, :category_id, [{"Choose category", 0} | categories_for_filter_select()] %>
       </div>
 
       <div class="form-field">
