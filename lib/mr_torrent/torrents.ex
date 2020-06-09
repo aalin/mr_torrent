@@ -4,6 +4,7 @@ defmodule MrTorrent.Torrents do
   alias MrTorrent.Torrents.Torrent
   alias MrTorrent.Torrents.Access
   alias MrTorrent.Torrents.Announcement
+  alias MrTorrent.Torrents.Filter
   alias MrTorrent.Peerlist
 
   def list_torrents do
@@ -11,7 +12,7 @@ defmodule MrTorrent.Torrents do
   end
 
   def list_torrents(%{} = params) do
-    Torrent.filter_torrents_query(
+    Filter.filter_torrents_query(
       query: params["query"],
       category_ids: find_category_ids_for_filter(params["category_id"])
     ) |> Repo.all()

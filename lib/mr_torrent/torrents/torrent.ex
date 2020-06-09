@@ -37,31 +37,6 @@ defmodule MrTorrent.Torrents.Torrent do
       preload: [:files, :category]
   end
 
-  def filter_torrents_query(opts \\ []) do
-    from torrent in MrTorrent.Torrents.Torrent,
-      where: ^filter_where(opts),
-      preload: [:files, :category]
-  end
-
-  def filter_where(opts) do
-    import Ecto.Query
-
-    Enum.reduce(opts, dynamic(true), fn
-      {:category_ids, []}, dynamic ->
-        dynamic
-      {:category_ids, category_ids}, dynamic when is_list(category_ids) ->
-        dynamic([torrent], ^dynamic and torrent.category_id in ^category_ids)
-      {:query, query}, dynamic when is_binary(query) ->
-        query
-        |> String.split(" ")
-        |> Enum.reduce(dynamic, fn search_string, dynamic ->
-             dynamic([torrent], ^dynamic and ilike(torrent.name, ^(search_string <> "%")))
-           end)
-      {_, _}, dynamic ->
-        dynamic
-    end)
-  end
-
   def generate_torrent_file(torrent, announce_url, comment) do
     Bencode.encode(%{
       "announce" => announce_url,
