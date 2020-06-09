@@ -3,9 +3,9 @@ defmodule MrTorrent.Repo.Migrations.CreateAnnouncements do
 
   def change do
     create table(:announcements) do
-      add :downloaded, :integer, default: 0
-      add :left, :integer, default: 0
-      add :uploaded, :integer, default: 0
+      add :downloaded, :bigint, default: 0
+      add :left, :bigint, default: 0
+      add :uploaded, :bigint, default: 0
       add :ip, :string, null: false
       add :port, :integer, null: false
       add :event, :string, null: false
