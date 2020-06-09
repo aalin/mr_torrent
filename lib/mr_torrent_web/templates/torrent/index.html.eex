@@ -32,7 +32,7 @@
     </tr>
   </thead>
   <tbody>
-  <%= for torrent <- @torrents do %>
+  <%= for torrent <- @torrents.list do %>
     <% {seeders, leechers} = MrTorrent.Peerlist.get_seeders_and_leechers(torrent) %>
     <tr>
       <td><%= link torrent.name, to: Routes.torrent_path(@conn, :show, torrent) %></td>
@@ -45,3 +45,5 @@
   <% end %>
   </tbody>
 </table>
+
+<%= MrTorrentWeb.PaginatorHelper.render(@conn, @torrents, class: "pagination") %>

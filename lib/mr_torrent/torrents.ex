@@ -15,7 +15,8 @@ defmodule MrTorrent.Torrents do
     Filter.filter_torrents_query(
       query: params["query"],
       category_ids: find_category_ids_for_filter(params["category_id"])
-    ) |> Repo.all()
+    )
+    |> MrTorrent.Paginator.paginate(params["page"])
   end
 
   defp find_category_ids_for_filter(nil), do: nil

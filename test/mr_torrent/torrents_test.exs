@@ -20,9 +20,9 @@ defmodule MrTorrent.TorrentsTest do
       id = torrent.id
 
       assert torrent.name == "debian-10.4.0-amd64-netinst.iso"
-      assert [%{id: ^id}] = Torrents.list_torrents(%{ "query" => "debian" })
-      assert [%{id: ^id}] = Torrents.list_torrents(%{ "category_id" => Integer.to_string(torrent.category_id) })
-      assert [] == Torrents.list_torrents(%{ "query" => "lol" })
+      assert [%{id: ^id}] = Torrents.list_torrents(%{ "query" => "debian" }).list
+      assert [%{id: ^id}] = Torrents.list_torrents(%{ "category_id" => Integer.to_string(torrent.category_id) }).list
+      assert [] == Torrents.list_torrents(%{ "query" => "lol" }).list
     end
 
     test "get_torrent!/1 returns the torrent with given id" do
