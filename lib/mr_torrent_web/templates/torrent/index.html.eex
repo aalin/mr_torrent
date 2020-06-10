@@ -29,6 +29,7 @@
       <th>Total size</th>
       <th>Seeders</th>
       <th>Leechers</th>
+      <th>Category</th>
       <th>Uploaded at</th>
       <th>Download</th>
     </tr>
@@ -41,8 +42,9 @@
       <td><%= total_size torrent %></td>
       <td><%= autoupdate_torrent_field torrent.id, :seeders, seeders %></td>
       <td><%= autoupdate_torrent_field torrent.id, :leechers, leechers %></td>
+      <td><%= category_link(torrent.category) %></td>
       <td><%= torrent.inserted_at %></td>
-      <td><a href="<%= Routes.torrent_path(@conn, :download, torrent) %>">Download .torrent</a></td>
+      <td><a href="<%= Routes.torrent_path(@conn, :download, torrent) %>">Download</a></td>
     </tr>
   <% end %>
   </tbody>

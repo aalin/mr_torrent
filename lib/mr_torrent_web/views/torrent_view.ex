@@ -24,6 +24,15 @@ defmodule MrTorrentWeb.TorrentView do
     )
   end
 
+  def category_link(category) do
+    case category do
+      %MrTorrent.Torrents.Category{} ->
+        link to: "?category_id=#{category.id}", do: category.name
+      _ ->
+        "N/A"
+    end
+  end
+
   def categories_for_filter_select do
     traverse_category_tree_for_filter_select(MrTorrent.Torrents.category_tree)
   end
