@@ -3,11 +3,21 @@ defmodule MrTorrent.Torrents.Filter do
 
   def filter_torrents_query(opts \\ []) do
     from torrent in MrTorrent.Torrents.Torrent,
+      left_join: gc in subquery(grab_count_subquery()), on: gc.torrent_id == torrent.id,
+      select_merge: %{
+        grab_count: coalesce(gc.grab_count, 0)
+      },
       where: ^filter_where(opts),
       preload: [:files, :category]
   end
 
-  def filter_where(opts) do
+  defp grab_count_subquery do
+    from access in MrTorrent.Torrents.Access,
+      select: %{grab_count: count(access.id), torrent_id: access.torrent_id},
+      group_by: access.torrent_id
+  end
+
+  defp filter_where(opts) do
     Enum.reduce(opts, dynamic(true), fn
       {:category_ids, []}, dynamic ->
         dynamic

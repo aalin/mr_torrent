@@ -18,6 +18,8 @@ defmodule MrTorrent.Torrents.Torrent do
     field :uploaded_file, :binary, virtual: true
     field :decoded_info, :map, virtual: true
 
+    field :grab_count, :integer, virtual: true
+
     belongs_to :user, MrTorrent.Accounts.User
     has_many :files, MrTorrent.Torrents.TorrentFile
     belongs_to :category, MrTorrent.Torrents.Category

@@ -67,9 +67,24 @@ defmodule MrTorrent.Torrents do
     if access = Repo.one(query) do
       access
     else
-      Access.generate_access(torrent, user)
-      |> Repo.insert!()
+      result =
+        Access.generate_access(torrent, user)
+        |> Repo.insert!()
+
+      broadcast_grab_count(torrent)
+
+      result
     end
+  end
+
+  defp broadcast_grab_count(torrent) do
+    MrTorrentWeb.Endpoint.broadcast("torrent:#{torrent.id}", "update_fields", %{
+      grab_count: get_grab_count(torrent)
+    })
+  end
+
+  defp get_grab_count(torrent) do
+    Repo.aggregate(MrTorrent.Torrents.Access.grab_count_query(torrent), :count)
   end
 
   defp announce_url(%Plug.Conn{scheme: scheme, host: host, port: port}, token) do

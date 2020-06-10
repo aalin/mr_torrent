@@ -25,6 +25,11 @@ defmodule MrTorrent.Torrents.Access do
     {:ok, query}
   end
 
+  def grab_count_query(torrent) do
+    from access in MrTorrent.Torrents.Access,
+      where: [torrent_id: ^torrent.id]
+  end
+
   def verify_token_query(token) do
     query =
       from access in MrTorrent.Torrents.Access,
