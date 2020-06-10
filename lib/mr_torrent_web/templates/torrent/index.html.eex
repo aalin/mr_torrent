@@ -22,29 +22,27 @@
   </fieldset>
 <% end %>
 
-<table>
+<table class="torrents-table">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Total size</th>
-      <th>Seeders</th>
-      <th>Leechers</th>
-      <th>Category</th>
-      <th>Uploaded at</th>
-      <th>Download</th>
+      <th colspan="2">Name</th>
+      <th class="align-center">⛟</th>
+      <th class="seeders align-center">🡅</th>
+      <th class="leechers align-center">🡇</th>
     </tr>
   </thead>
   <tbody>
   <%= for torrent <- @torrents.list do %>
     <% {seeders, leechers} = MrTorrent.Peerlist.get_seeders_and_leechers(torrent) %>
-    <tr>
-      <td><%= link torrent.name, to: Routes.torrent_path(@conn, :show, torrent) %></td>
-      <td><%= total_size torrent %></td>
-      <td><%= autoupdate_torrent_field torrent.id, :seeders, seeders %></td>
-      <td><%= autoupdate_torrent_field torrent.id, :leechers, leechers %></td>
-      <td><%= category_link(torrent.category) %></td>
-      <td><%= torrent.inserted_at %></td>
-      <td><a href="<%= Routes.torrent_path(@conn, :download, torrent) %>">Download</a></td>
+    <tr class="torrent-row">
+      <td>
+        <h3><%= link torrent.name, to: Routes.torrent_path(@conn, :show, torrent) %></h3>
+        <p>Added in <%= category_link(torrent.category) %> on <%= torrent.inserted_at %></p>
+      </td>
+      <td class="download-column align-center"><a href="<%= Routes.torrent_path(@conn, :download, torrent) %>" title="Download .torrent">🖫</a></td>
+      <td class="align-center"><%= total_size torrent %></td>
+      <td class="seeders align-center"><%= autoupdate_torrent_field torrent.id, :seeders, seeders %></td>
+      <td class="leechers align-center"><%= autoupdate_torrent_field torrent.id, :leechers, leechers %></td>
     </tr>
   <% end %>
   </tbody>

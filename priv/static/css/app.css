@@ -16,11 +16,11 @@ th {
   text-align: left;
 }
 
-th.align-center, td.align-center {
+.align-center {
   text-align: center;
 }
 
-th.align-right, td.align-right {
+.align-right {
   text-align: right;
 }
 
@@ -124,4 +124,48 @@ dt {
   max-width: 20em;
   flex: 0 1 auto;
   margin: .5em;
+}
+
+.torrents-table,
+.torrents-table h3 {
+  font-size: 14px
+}
+
+.torrents-table h3 {
+  margin: 0;
+}
+
+.torrents-table h3 a:active,
+.torrents-table h3 a:hover {
+  text-decoration: underline;
+}
+
+.torrents-table a {
+  text-decoration: none;
+}
+
+.torrents-table p {
+  margin: .5em 0 0 0;
+}
+
+td.seeders {
+  color: #090;
+  font-weight: bold;
+}
+
+td.leechers {
+  color: #900;
+  font-weight: bold;
+}
+
+td.download-column a {
+  text-decoration: none;
+  font-size: 1.6em;
+}
+
+td.download-column a:link,
+td.download-column a:visited,
+td.download-column a:active,
+td.download-column a:hover {
+  color: #090;
 }
