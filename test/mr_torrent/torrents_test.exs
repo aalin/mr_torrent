@@ -11,23 +11,32 @@ defmodule MrTorrent.TorrentsTest do
 
     test "list_torrents/0 returns all torrents" do
       torrent = torrent_fixture()
-      assert Enum.map(Torrents.list_torrents(), &delete_keys_for_comparison(&1)) == [delete_keys_for_comparison(torrent)]
+
+      assert Enum.map(Torrents.list_torrents(), &delete_keys_for_comparison(&1)) == [
+               delete_keys_for_comparison(torrent)
+             ]
     end
 
     test "list_torrents/1 filters torrents" do
-      torrent = torrent_fixture(%{ "name" => "hello" })
+      torrent = torrent_fixture(%{"name" => "hello"})
 
       id = torrent.id
 
       assert torrent.name == "debian-10.4.0-amd64-netinst.iso"
-      assert [%{id: ^id}] = Torrents.list_torrents(%{ "query" => "debian" }).list
-      assert [%{id: ^id}] = Torrents.list_torrents(%{ "category_id" => Integer.to_string(torrent.category_id) }).list
-      assert [] == Torrents.list_torrents(%{ "query" => "lol" }).list
+      assert [%{id: ^id}] = Torrents.list_torrents(%{"query" => "debian"}).list
+
+      assert [%{id: ^id}] =
+               Torrents.list_torrents(%{"category_id" => Integer.to_string(torrent.category_id)}).list
+
+      assert [] == Torrents.list_torrents(%{"query" => "lol"}).list
     end
 
     test "get_torrent!/1 returns the torrent with given id" do
       torrent = torrent_fixture()
-      assert delete_keys_for_comparison(Torrents.get_torrent!(torrent.id)) == delete_keys_for_comparison(torrent)
+
+      assert delete_keys_for_comparison(Torrents.get_torrent!(torrent.id)) ==
+               delete_keys_for_comparison(torrent)
+
       assert Enum.count(torrent.files) == 1
     end
 
@@ -41,7 +50,10 @@ defmodule MrTorrent.TorrentsTest do
     test "create_torrent/2 with a valid torrent creates it" do
       assert {:ok, %Torrent{} = torrent} =
                MrTorrent.Torrents.create_torrent(
-                 %{"uploaded_file" => valid_torrent_upload(), "category_id" => category_fixture().id},
+                 %{
+                   "uploaded_file" => valid_torrent_upload(),
+                   "category_id" => category_fixture().id
+                 },
                  user_fixture()
                )
 
@@ -57,7 +69,10 @@ defmodule MrTorrent.TorrentsTest do
     test "create_torrent/2 with a valid multifile torrent creates it" do
       assert {:ok, %Torrent{} = torrent} =
                MrTorrent.Torrents.create_torrent(
-                 %{"uploaded_file" => valid_multifile_torrent_upload(), "category_id" => category_fixture().id()},
+                 %{
+                   "uploaded_file" => valid_multifile_torrent_upload(),
+                   "category_id" => category_fixture().id()
+                 },
                  user_fixture()
                )
 
@@ -220,11 +235,11 @@ defmodule MrTorrent.TorrentsTest do
       category_0_1_1_0 = category_fixture(name: "0.1.1.0", parent_id: category_0_1_1.id)
 
       assert Torrents.find_subcategory_ids(category_0_1.id) == [
-        category_0_1.id,
-        category_0_1_0.id,
-        category_0_1_1.id,
-        category_0_1_1_0.id,
-      ]
+               category_0_1.id,
+               category_0_1_0.id,
+               category_0_1_1.id,
+               category_0_1_1_0.id
+             ]
     end
 
     test "get_category!/1 returns the category with given id" do

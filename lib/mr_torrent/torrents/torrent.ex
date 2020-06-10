@@ -43,7 +43,7 @@ defmodule MrTorrent.Torrents.Torrent do
     Bencode.encode(%{
       "announce" => announce_url,
       "comment" => comment,
-      "info" => Bencode.decode!(torrent.info),
+      "info" => Bencode.decode!(torrent.info)
     })
   end
 
@@ -100,10 +100,10 @@ defmodule MrTorrent.Torrents.Torrent do
   defp set_fields_from_decoded_info(changeset) do
     decoded_info = get_change(changeset, :decoded_info)
 
-    {:ok, new_info} = Map.put(decoded_info, "private", 1) |> Bencode.encode
+    {:ok, new_info} = Map.put(decoded_info, "private", 1) |> Bencode.encode()
 
     parsed_files = parse_files(decoded_info)
-    total_size = Enum.reduce(parsed_files, 0, fn (file, acc) -> file.size + acc end)
+    total_size = Enum.reduce(parsed_files, 0, fn file, acc -> file.size + acc end)
 
     changeset
     |> put_change(:name, decoded_info["name"])

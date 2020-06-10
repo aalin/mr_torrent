@@ -141,19 +141,19 @@ defmodule MrTorrent.Torrents do
 
   defp build_category_tree(categories, category) do
     categories
-    |> Enum.filter(fn (cat) -> cat.parent_id == category.id end)
-    |> Enum.reduce([], fn (child, acc) ->
-         [{child, build_category_tree(categories, child)} | acc]
-       end)
+    |> Enum.filter(fn cat -> cat.parent_id == category.id end)
+    |> Enum.reduce([], fn child, acc ->
+      [{child, build_category_tree(categories, child)} | acc]
+    end)
   end
 
   def find_subcategory_ids(category_id) do
     categories = Repo.all(Category)
-    category = Enum.find(categories, & &1.id == category_id)
+    category = Enum.find(categories, &(&1.id == category_id))
 
     find_category_children(categories, category)
-    |> List.flatten
-    |> Enum.sort
+    |> List.flatten()
+    |> Enum.sort()
   end
 
   defp find_category_children(_categories, nil), do: []
@@ -161,7 +161,7 @@ defmodule MrTorrent.Torrents do
   defp find_category_children(categories, category) do
     children =
       categories
-      |> Enum.filter(& &1.parent_id == category.id)
+      |> Enum.filter(&(&1.parent_id == category.id))
       |> Enum.map(fn child -> find_category_children(categories, child) end)
 
     if Enum.empty?(children) do

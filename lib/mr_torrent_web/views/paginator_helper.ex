@@ -19,11 +19,12 @@ defmodule MrTorrentWeb.PaginatorHelper do
   end
 
   defp page_buttons(conn, data, window_size) do
-    {first_index, last_index} = pagination_window(
-      data.current_page,
-      data.total_pages,
-      min(data.total_pages, window_size)
-    )
+    {first_index, last_index} =
+      pagination_window(
+        data.current_page,
+        data.total_pages,
+        min(data.total_pages, window_size)
+      )
 
     for page <- first_index..last_index do
       class = if data.current_page == page, do: "active"
@@ -50,9 +51,9 @@ defmodule MrTorrentWeb.PaginatorHelper do
 
     content_tag(:li) do
       if disabled do
-        content_tag :span, text
+        content_tag(:span, text)
       else
-        link to: "?#{params}", rel: rel, do: text
+        link(to: "?#{params}", rel: rel, do: text)
       end
     end
   end

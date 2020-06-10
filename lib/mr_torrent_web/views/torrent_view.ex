@@ -27,20 +27,21 @@ defmodule MrTorrentWeb.TorrentView do
   def category_link(category) do
     case category do
       %MrTorrent.Torrents.Category{} ->
-        link to: "?category_id=#{category.id}", do: category.name
+        link(to: "?category_id=#{category.id}", do: category.name)
+
       _ ->
         "N/A"
     end
   end
 
   def categories_for_filter_select do
-    traverse_category_tree_for_filter_select(MrTorrent.Torrents.category_tree)
+    traverse_category_tree_for_filter_select(MrTorrent.Torrents.category_tree())
   end
 
   defp traverse_category_tree_for_filter_select(tree, path \\ []) do
     tree
     |> Enum.sort_by(fn {category, _} -> category.name end)
-    |> Enum.reduce([], fn ({category, children}, acc) ->
+    |> Enum.reduce([], fn {category, children}, acc ->
       item = {
         String.duplicate("— ", Enum.count(path)) <> category.name,
         category.id
@@ -56,23 +57,24 @@ defmodule MrTorrentWeb.TorrentView do
   end
 
   def categories_for_select do
-    build_optgroup_list(MrTorrent.Torrents.category_tree)
+    build_optgroup_list(MrTorrent.Torrents.category_tree())
   end
 
   defp build_optgroup_list(tree, path \\ []) do
     tree
     |> Enum.sort_by(fn {category, _} -> category.name end)
     |> Enum.reduce([], fn
-      ({category, []}, acc) ->
+      {category, []}, acc ->
         acc ++ [{category.name, category.id}]
 
-      ({category, children}, acc) ->
+      {category, children}, acc ->
         current_path = path ++ [category.name]
         name = Enum.join(current_path, " / ")
 
-        {leaves, nodes} = Enum.split_with(children, fn {_child, grandchildren} ->
-          Enum.empty?(grandchildren)
-        end)
+        {leaves, nodes} =
+          Enum.split_with(children, fn {_child, grandchildren} ->
+            Enum.empty?(grandchildren)
+          end)
 
         leaves_list = build_optgroup_list(leaves, current_path)
         nodes_list = build_optgroup_list(nodes, current_path)

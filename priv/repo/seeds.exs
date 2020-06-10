@@ -10,7 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-IO.puts "Creating movie categories"
+IO.puts("Creating movie categories")
 
 movies = MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: "Movies"})
 
@@ -19,7 +19,7 @@ movies = MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: "Movies"})
   MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: name, parent_id: movies.id})
 end)
 
-IO.puts "Creating music categories"
+IO.puts("Creating music categories")
 
 music = MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: "Music"})
 

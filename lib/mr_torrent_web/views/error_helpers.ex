@@ -48,9 +48,11 @@ defmodule MrTorrentWeb.ErrorHelpers do
   def error_list(%{errors: []}), do: nil
 
   def error_list(%{errors: errors} = _form) do
-    content_tag :ul,
+    content_tag(
+      :ul,
       Enum.map(errors, fn {field, {message, _validation}} ->
-        content_tag(:li, "#{Atom.to_string(field)} #{ message }")
+        content_tag(:li, "#{Atom.to_string(field)} #{message}")
       end)
+    )
   end
 end

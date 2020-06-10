@@ -3,7 +3,8 @@ defmodule MrTorrent.Torrents.Filter do
 
   def filter_torrents_query(opts \\ []) do
     from torrent in MrTorrent.Torrents.Torrent,
-      left_join: gc in subquery(grab_count_subquery()), on: gc.torrent_id == torrent.id,
+      left_join: gc in subquery(grab_count_subquery()),
+      on: gc.torrent_id == torrent.id,
       select_merge: %{
         grab_count: coalesce(gc.grab_count, 0)
       },
@@ -31,10 +32,14 @@ defmodule MrTorrent.Torrents.Filter do
       {:query, query}, dynamic when is_binary(query) ->
         terms = query_to_terms(query)
 
-        dynamic([torrent], ^dynamic and fragment(
-          "to_tsvector('english', REPLACE(name, '.', ' ')) @@ to_tsquery(?)",
-          ^terms
-        ))
+        dynamic(
+          [torrent],
+          ^dynamic and
+            fragment(
+              "to_tsvector('english', REPLACE(name, '.', ' ')) @@ to_tsquery(?)",
+              ^terms
+            )
+        )
 
       {_, _}, dynamic ->
         dynamic
@@ -45,7 +50,7 @@ defmodule MrTorrent.Torrents.Filter do
     query
     |> String.replace(~r/\W/u, " ")
     |> String.split(" ", trim: true)
-    |> Enum.map(& &1 <> ":*")
+    |> Enum.map(&(&1 <> ":*"))
     |> Enum.join(" & ")
   end
 end

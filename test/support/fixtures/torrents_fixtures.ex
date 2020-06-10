@@ -7,13 +7,13 @@ defmodule MrTorrent.TorrentsFixtures do
       |> Enum.into(%{
         name: unique_category_name()
       })
-      |> MrTorrent.Torrents.create_category
+      |> MrTorrent.Torrents.create_category()
 
     category
   end
 
   defp unique_category_name() do
-    "category_" <> :crypto.strong_rand_bytes(5) |> Base.encode16()
+    ("category_" <> :crypto.strong_rand_bytes(5)) |> Base.encode16()
   end
 
   def valid_torrent_upload do
