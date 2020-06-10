@@ -81,10 +81,13 @@ dt {
 }
 
 .pagination {
-  list-style-type: none;
+  text-align: center;
+}
+
+.pagination ul {
   padding: 0;
   margin: 1em 0;
-  text-align: center;
+  list-style-type: none;
 }
 
 .pagination li {

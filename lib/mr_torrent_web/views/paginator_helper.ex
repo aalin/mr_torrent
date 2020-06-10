@@ -4,6 +4,7 @@ defmodule MrTorrentWeb.PaginatorHelper do
   """
 
   use Phoenix.HTML
+  import MrTorrentWeb.NumberHelper, only: [format_number: 1]
 
   @default_window_size 10
 
@@ -15,7 +16,23 @@ defmodule MrTorrentWeb.PaginatorHelper do
     pages = page_buttons(conn, data, window_size)
     next = next_button(conn, data)
 
-    content_tag(:ul, [prev, pages, next], class: class)
+    content_tag(:div, class: class) do
+      [
+        description(data),
+        content_tag(:ul, [prev, pages, next])
+      ]
+    end
+  end
+
+  defp description(data) do
+    first = (data.current_page - 1) * data.results_per_page + 1
+    last = min(data.current_page * data.results_per_page, data.total_results)
+
+    content_tag(:p, [
+      content_tag(:strong, "#{format_number(first)} – #{format_number(last)}"),
+      " of total ",
+      content_tag(:strong, "#{format_number(data.total_results)} torrents")
+    ])
   end
 
   defp page_buttons(conn, data, window_size) do
@@ -72,7 +89,7 @@ defmodule MrTorrentWeb.PaginatorHelper do
         {1, min(last - first, window_size)}
 
       last >= total_pages ->
-        {max(total_pages + first - last, 0), total_pages}
+        {max(total_pages + first - last, 1), total_pages}
 
       true ->
         {first, last}
