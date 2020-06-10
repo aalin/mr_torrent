@@ -1,6 +1,6 @@
 <h1><%= @torrent.name %></h1>
 
-<p><a href="<%= Routes.torrent_path(@conn, :download, @torrent) %>">Download .torrent</a></p>
+<p><%= download_torrent_link(@conn, @torrent, "Download .torrent") %></p>
 
 <dl>
   <dt>Name:</dt>

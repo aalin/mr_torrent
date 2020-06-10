@@ -17,6 +17,11 @@ defmodule MrTorrentWeb.TorrentView do
     torrent.total_size |> format_file_size
   end
 
+  def download_torrent_link(conn, torrent, text \\ "Download", opts \\ []) do
+    title = Keyword.get(opts, :title, "Download .torrent")
+    link(text, to: Routes.torrent_path(conn, :download, torrent), download: "", title: title)
+  end
+
   def autoupdate_torrent_field(torrent_id, field_name, initial_content \\ "") do
     content_tag(:span, initial_content,
       "data-torrent-id": torrent_id,
