@@ -16,20 +16,12 @@ defmodule MrTorrent.TorrentsFixtures do
     ("category_" <> :crypto.strong_rand_bytes(5)) |> Base.encode16()
   end
 
-  def valid_torrent_upload do
-    path = "test/support/fixtures/debian-10.4.0-amd64-netinst.iso.torrent"
-    %Plug.Upload{path: path, filename: Path.basename(path)}
-  end
+  def valid_torrent_upload, do: plug_upload("test/support/fixtures/debian-10.4.0-amd64-netinst.iso.torrent")
+  def valid_multifile_torrent_upload, do: plug_upload("test/support/fixtures/gd1967-07-23.aud.sorochty.125462.flac16_archive.torrent")
+  def invalid_torrent_upload, do: plug_upload("test/support/fixtures/invalid.torrent")
+  def empty_torrent_upload, do: plug_upload("test/support/fixtures/empty.torrent")
 
-  def valid_multifile_torrent_upload do
-    path = "test/support/fixtures/gd1967-07-23.aud.sorochty.125462.flac16_archive.torrent"
-    %Plug.Upload{path: path, filename: Path.basename(path)}
-  end
-
-  def invalid_torrent_upload do
-    path = "test/support/fixtures/invalid.torrent"
-    %Plug.Upload{path: path, filename: Path.basename(path)}
-  end
+  defp plug_upload(path), do: %Plug.Upload{path: path, filename: Path.basename(path)}
 
   def torrent_fixture(opts \\ %{}) do
     upload = Map.get(opts, :upload) || valid_torrent_upload()

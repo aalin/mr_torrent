@@ -113,6 +113,14 @@ defmodule MrTorrent.TorrentsTest do
                )
     end
 
+    test "create_torrent/2 with an invalid file returns an error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               MrTorrent.Torrents.create_torrent(
+                 %{"uploaded_file" => empty_torrent_upload()},
+                 user_fixture()
+               )
+    end
+
     test "delete_torrent/1 deletes the torrent" do
       torrent = torrent_fixture()
       assert {:ok, %Torrent{}} = Torrents.delete_torrent(torrent)

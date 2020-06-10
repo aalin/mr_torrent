@@ -85,8 +85,11 @@ defmodule MrTorrent.Torrents.Torrent do
     case get_change(changeset, :uploaded_file) do
       %Plug.Upload{path: path} ->
         case decode_file(path) do
-          {:ok, info} ->
+          {:ok, %{} = info} ->
             put_change(changeset, :decoded_info, info)
+
+          {:ok, _} ->
+            add_error(changeset, :uploaded_file, "is invalid")
 
           {:error, message} ->
             add_error(changeset, :uploaded_file, message)
@@ -94,6 +97,13 @@ defmodule MrTorrent.Torrents.Torrent do
 
       _ ->
         add_error(changeset, :uploaded_file, "is invalid")
+    end
+  end
+
+  defp decode_file(path) do
+    with {:ok, file} <- File.read(path),
+         {:ok, %{"info" => info}} <- Bencode.decode(file) do
+      {:ok, info}
     end
   end
 
@@ -117,13 +127,6 @@ defmodule MrTorrent.Torrents.Torrent do
     info = get_change(changeset, :info)
 
     put_change(changeset, :info_hash, :crypto.hash(:sha, info))
-  end
-
-  defp decode_file(path) do
-    with {:ok, file} <- File.read(path),
-         {:ok, %{"info" => info}} <- Bencode.decode(file) do
-      {:ok, info}
-    end
   end
 
   defp parse_files(%{"files" => files})
