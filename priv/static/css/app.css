@@ -246,9 +246,14 @@ td.download-column a:hover {
 }
 
 .tag-list li {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+.tag-list li a {
   margin: 0 .25em;
   padding: .25em .5em;
-  display: inline-block;
   font-weight: bold;
   color: #fff;
   text-shadow:

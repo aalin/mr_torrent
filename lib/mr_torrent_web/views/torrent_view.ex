@@ -22,13 +22,10 @@ defmodule MrTorrentWeb.TorrentView do
   def tag_list(conn, tags) do
     content_tag(:ul, class: "tag-list") do
       Enum.map(tags, fn tag ->
-        color = StringColorHelper.hsl_color_from_string(tag.name)
-
-        content_tag(
-          :li,
-          tag.name,
-          style: "background: #{color};"
-        )
+        content_tag(:li) do
+          color = StringColorHelper.hsl_color_from_string(tag.name)
+          link(tag.name, to: Routes.torrent_path(conn, :index, tag: tag.name), style: "background: #{color};")
+        end
       end)
     end
   end
