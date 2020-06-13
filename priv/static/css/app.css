@@ -1,9 +1,35 @@
+:root {
+  --border-color: #ccc;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   font-family: "DejaVu Sans";
+  color: #000;
+  background: #fff;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--border-color);
+}
+
+a:link,
+a:visited,
+a:active,
+a:hover {
+  color: #009;
+  text-decoration: underline;
+}
+
+a:active,
+a:hover {
+  color: #06f;
+  text-decoration: underline;
 }
 
 nav ul {
@@ -35,13 +61,18 @@ table {
 }
 
 th, td {
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   padding: .5em;
 }
 
 label {
   display: block;
   margin: .5em 0;
+}
+
+fieldset {
+  border: 1px solid var(--border-color);
+  margin: 0;
 }
 
 .form-field {
@@ -96,7 +127,7 @@ dt {
 
 .pagination li {
   display: inline-block;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   margin: .5em;
 }
 
@@ -156,25 +187,38 @@ dt {
 }
 
 td.seeders {
-  color: #090;
+  color: #0c0;
   font-weight: bold;
 }
 
 td.leechers {
-  color: #900;
+  color: #c00;
   font-weight: bold;
+}
+
+td.download-column {
+  position: relative;
 }
 
 td.download-column a {
   text-decoration: none;
-  font-size: 1.6em;
+  text-indent: -9999px;
+  height: 1.5em;
+  width: 1.5em;
+  display: inline-block;
+  background: center / contain no-repeat;
+  background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22944.699%22%20height%3D%22944.699%22%3E%3Cg%20fill%3D%22%230c0%22%3E%3Cpath%20d%3D%22M894.801%20579.05h-309.5l-41.5%2047.199c-18%2020.5-44.102%2032.301-71.401%2032.301-27.3%200-53.4-11.801-71.4-32.301l-41.5-47.199H50c-27.6%200-50%2022.4-50%2050v198.5c0%2027.6%2022.4%2050%2050%2050h844.699c27.602%200%2050-22.4%2050-50v-198.5c.102-27.6-22.299-50-49.898-50zM139.2%20770.95c-23.5%200-42.6-19.102-42.6-42.602s19.1-42.6%2042.6-42.6%2042.6%2019.1%2042.6%2042.6-19.1%2042.602-42.6%2042.602z%22%2F%3E%3Cpath%20d%3D%22M419.4%20579.05l15.4%2017.6c10%2011.301%2023.8%2017%2037.6%2017%2013.799%200%2027.6-5.699%2037.6-17l15.4-17.6%20208.7-237.8c28.4-32.3%205.4-83-37.6-83h-65.6v-141.1c0-27.6-22.4-50-50-50h-217c-27.6%200-50%2022.4-50%2050v141.2h-65.6c-43%200-65.9%2050.7-37.6%2083l208.7%20237.7z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+}
+
+td.download-column a:hover {
+  filter: brightness(1.2);
 }
 
 td.download-column a:link,
 td.download-column a:visited,
 td.download-column a:active,
 td.download-column a:hover {
-  color: #090;
+  color: #0c0;
 }
 
 .tag-list {
@@ -191,7 +235,10 @@ td.download-column a:hover {
   display: inline-block;
   font-weight: bold;
   color: #fff;
-  text-shadow: 0 0 2px #000;
+  text-shadow:
+    0 0 1px #000,
+    0 0 1px #000,
+    0 0 1px #000;
   border: 1px solid #000;
   border-radius: 3px;
 }

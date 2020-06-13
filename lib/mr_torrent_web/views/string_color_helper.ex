@@ -1,8 +1,11 @@
 defmodule MrTorrentWeb.StringColorHelper do
   def color_from_string(string) do
+    float = get_float(string)
+
     string
     |> get_float()
     |> html_palette()
+    |> Kernel.<> " /* #{float} */"
   end
 
   def html_palette(float) do
@@ -26,9 +29,8 @@ defmodule MrTorrentWeb.StringColorHelper do
   defp get_float(string) do
     :crypto.hash(:md5, string)
     |> :binary.bin_to_list
-    |> Enum.slice(0, 5)
-    |> Enum.map(& &1 / 256.0)
-    |> Enum.reduce(0.0, fn x, acc -> x + acc end)
+    |> Enum.map(& &1 / 255.0)
+    |> Enum.sum()
     |> fract
   end
 

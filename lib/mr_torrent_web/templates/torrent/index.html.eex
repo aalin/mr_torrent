@@ -44,7 +44,7 @@
         </p>
       </td>
       <td class="download-column align-center">
-        <%= download_torrent_link(@conn, torrent, "🖫") %>
+        <%= download_torrent_link(@conn, torrent, "Download") %>
       </td>
       <td class="align-center" title="Total size"><%= total_size torrent %></td>
       <td class="grabs align-center" title="Grab count"><%= autoupdate_torrent_field torrent.id, :grab_count, torrent.grab_count %> times</td>
