@@ -32,10 +32,21 @@ a:hover {
   text-decoration: underline;
 }
 
+header {
+  position: relative;
+}
+
+nav {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 nav ul {
   list-style-type: none;
-  margin: 1em 0;
+  margin: 0;
   padding: 0;
+  line-height: 2.4em;
 }
 
 nav li {
