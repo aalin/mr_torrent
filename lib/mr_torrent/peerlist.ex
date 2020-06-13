@@ -51,7 +51,7 @@ defmodule MrTorrent.Peerlist do
   end
 
   defp update_peer(server, ip, params) do
-    event = Map.fetch!(params, "event")
+    event = Map.get(params, "event", "none")
     peer_id = Map.fetch!(params, "peer_id") |> URI.decode()
     ip = Map.get(params, "ip", ip)
     port = Map.fetch!(params, "port") |> String.to_integer()

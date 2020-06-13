@@ -178,6 +178,8 @@ defmodule MrTorrent.TorrentsTest do
       "peer_id" => :crypto.strong_rand_bytes(5)
     }
 
+    @valid_ip {192, 168, 0, 1}
+
     setup do
       torrent = torrent_fixture()
       user = user_fixture()
@@ -193,7 +195,7 @@ defmodule MrTorrent.TorrentsTest do
     test "announce/3 returns a peer list", %{access: access} do
       {:ok, response} =
         Torrents.announce(
-          {192, 168, 0, 1},
+          @valid_ip,
           Torrents.Access.encode_token(access.token),
           @valid_params
         )
@@ -209,10 +211,19 @@ defmodule MrTorrent.TorrentsTest do
              ]
     end
 
+    test "announce/3 sets a default event if left empty", %{access: access} do
+      {:ok, _response} =
+        Torrents.announce(
+          @valid_ip,
+          Torrents.Access.encode_token(access.token),
+          Map.delete(@valid_params, "event")
+        )
+    end
+
     test "announce/3 returns an error if the token is invalid" do
       {:error, error} =
         Torrents.announce(
-          {192, 168, 0, 1},
+          @valid_ip,
           "invalid",
           @valid_params
         )
