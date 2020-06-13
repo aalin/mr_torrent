@@ -25,9 +25,9 @@ defmodule MrTorrentWeb.SessionControllerTest do
         })
 
       assert get_session(conn, :user_token)
-      assert redirected_to(conn) =~ "/"
+      assert redirected_to(conn) =~ "/browse"
 
-      conn = get(conn, "/")
+      conn = get(conn, "/browse")
       assert html_response(conn, 200) =~ "Logout"
     end
 

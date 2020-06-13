@@ -21,14 +21,9 @@ defmodule MrTorrentWeb.Router do
   end
 
   scope "/", MrTorrentWeb do
-    pipe_through :browser
-
-    get "/", PageController, :index
-  end
-
-  scope "/", MrTorrentWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
+    get "/", SessionController, :new
     get "/signup", SignupController, :new
     post "/signup", SignupController, :create
   end
@@ -47,7 +42,6 @@ defmodule MrTorrentWeb.Router do
     pipe_through [:browser]
 
     get "/session", SessionController, :index
-    get "/session/new", SessionController, :new
     post "/session", SessionController, :create
     delete "/session", SessionController, :delete
   end

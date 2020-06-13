@@ -11,7 +11,7 @@ defmodule MrTorrentWeb.UserAuth do
     conn
     |> renew_session()
     |> put_session(:user_token, token)
-    |> redirect(to: "/")
+    |> redirect(to: Routes.torrent_path(conn, :index))
   end
 
   def fetch_current_user(conn, _opts) do
@@ -23,7 +23,7 @@ defmodule MrTorrentWeb.UserAuth do
   def redirect_if_user_is_authenticated(conn, _opts) do
     if conn.assigns[:current_user] do
       conn
-      |> redirect(to: "/")
+      |> redirect(to: Routes.torrent_path(conn, :index))
       |> halt()
     else
       conn
@@ -53,6 +53,6 @@ defmodule MrTorrentWeb.UserAuth do
 
     conn
     |> renew_session()
-    |> redirect(to: "/")
+    |> redirect(to: Routes.session_path(conn, :new))
   end
 end
