@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+body {
+  font-family: "DejaVu Sans";
+}
+
 nav ul {
   list-style-type: none;
   margin: 1em 0;
@@ -171,4 +175,23 @@ td.download-column a:visited,
 td.download-column a:active,
 td.download-column a:hover {
   color: #090;
+}
+
+.tag-list {
+  list-style-type: none;
+  float: right;
+  margin: 0;
+  padding: 0;
+  font-size: .8em;
+}
+
+.tag-list li {
+  margin: 0 .25em;
+  padding: .25em .5em;
+  display: inline-block;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 2px #000;
+  border: 1px solid #000;
+  border-radius: 3px;
 }

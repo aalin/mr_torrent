@@ -45,6 +45,7 @@ defmodule MrTorrent.TorrentsTest do
       |> Map.delete(:category)
       |> Map.delete(:files)
       |> Map.delete(:uploaded_file)
+      |> Map.delete(:tags)
     end
 
     test "create_torrent/2 with a valid torrent creates it" do
@@ -52,12 +53,15 @@ defmodule MrTorrent.TorrentsTest do
                MrTorrent.Torrents.create_torrent(
                  %{
                    "uploaded_file" => valid_torrent_upload(),
-                   "category_id" => category_fixture().id
+                   "category_id" => category_fixture().id,
+                   "tag_names" => "Foo, Bar"
                  },
                  user_fixture()
                )
 
       assert torrent.name == "debian-10.4.0-amd64-netinst.iso"
+
+      assert Enum.map(torrent.tags, & &1.name) == ["Foo", "Bar"]
 
       assert [
                %{size: 352_321_536, path: ["debian-10.4.0-amd64-netinst.iso"]}

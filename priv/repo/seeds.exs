@@ -10,20 +10,19 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-IO.puts("Creating movie categories")
+IO.puts("Creating default user")
 
-movies = MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: "Movies"})
+MrTorrent.Accounts.User.update_changeset(
+  %MrTorrent.Accounts.User{},
+  %{
+    username: "admin",
+    email: "admin@localhost",
+    password: "adminadminadmin"
+  }
+)
+|> MrTorrent.Repo.insert!()
 
-["Feature films", "Sci-fi / horror", "Comedy", "Silent movies", "Noir"]
+["Movies", "TV-Shows", "Music", "Books", "Applications", "Games", "Other"]
 |> Enum.each(fn name ->
-  MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: name, parent_id: movies.id})
-end)
-
-IO.puts("Creating music categories")
-
-music = MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: "Music"})
-
-["Live concert", "Rock", "Grateful Dead", "Reggae", "Jazz", "Hiphop"]
-|> Enum.each(fn name ->
-  MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: name, parent_id: music.id})
-end)
+     MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: name})
+   end)

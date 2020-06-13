@@ -239,4 +239,24 @@ defmodule MrTorrent.Torrents do
   def change_category(%Category{} = category, attrs \\ %{}) do
     Category.changeset(category, attrs)
   end
+
+  def insert_and_get_all_tags([]) do
+    []
+  end
+
+  def insert_and_get_all_tags(names) do
+    now =
+      NaiveDateTime.utc_now
+      |> NaiveDateTime.truncate(:second)
+
+    timestamps = %{
+      inserted_at: now,
+      updated_at: now
+    }
+
+    maps = Enum.map(names, &Map.put(timestamps, :name, &1))
+
+    Repo.insert_all(MrTorrent.Torrents.Tag, maps, on_conflict: :nothing)
+    Repo.all(MrTorrent.Torrents.Tag.get_all_query(names))
+  end
 end

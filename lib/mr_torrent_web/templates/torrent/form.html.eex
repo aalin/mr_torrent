@@ -17,6 +17,11 @@
   </div>
 
   <div class="form-field">
+    <%= label f, :tag_names, "Tags (comma-separated)" %>
+    <%= text_input f, :tag_names %>
+  </div>
+
+  <div class="form-field">
     <%= label f, :description, "Description" %>
     <%= textarea f, :description, class: "description-input" %>
   </div>

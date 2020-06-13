@@ -1,6 +1,8 @@
 defmodule MrTorrentWeb.TorrentView do
   use MrTorrentWeb, :view
 
+  alias MrTorrentWeb.StringColorHelper
+
   @units ["B", "KB", "MB", "GB"]
 
   def format_file_size(size, exponent \\ 0) do
@@ -15,6 +17,20 @@ defmodule MrTorrentWeb.TorrentView do
 
   def total_size(torrent) do
     torrent.total_size |> format_file_size
+  end
+
+  def tag_list(conn, tags) do
+    content_tag(:ul, class: "tag-list") do
+      Enum.map(tags, fn tag ->
+        color = StringColorHelper.color_from_string(tag.name)
+
+        content_tag(
+          :li,
+          tag.name,
+          style: "background: #{color};"
+        )
+      end)
+    end
   end
 
   def download_torrent_link(conn, torrent, text \\ "Download", opts \\ []) do

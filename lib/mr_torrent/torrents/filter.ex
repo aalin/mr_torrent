@@ -9,7 +9,7 @@ defmodule MrTorrent.Torrents.Filter do
         grab_count: coalesce(gc.grab_count, 0)
       },
       where: ^filter_where(opts),
-      preload: [:files, :category]
+      preload: [:files, :category, :tags]
   end
 
   defp grab_count_subquery do

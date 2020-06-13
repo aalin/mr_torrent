@@ -7,6 +7,10 @@
   <dd><%= @torrent.name %></dd>
   <dt>Uploaded by</dt>
   <dd><%= @user.username %></dd>
+  <dt>Tags</dt>
+  <dd>
+    <%= Enum.map(@torrent.tags, & &1.name) |> Enum.join(", ") %>
+  </dd>
   <dt>Seeders</dt>
   <dd><%= autoupdate_torrent_field @torrent.id, :seeders, @seeders %></dd>
   <dt>Leechers</dt>

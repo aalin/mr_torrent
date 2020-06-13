@@ -24,19 +24,25 @@ defmodule MrTorrent.Torrents.Torrent do
     has_many :files, MrTorrent.Torrents.TorrentFile
     belongs_to :category, MrTorrent.Torrents.Category
 
+    field :tag_names, :string, virtual: true
+
+    many_to_many :tags, MrTorrent.Torrents.Tag,
+      join_through: MrTorrent.Torrents.TorrentTag,
+      on_replace: :delete
+
     timestamps()
   end
 
   def find_torrent_query(id) do
     from torrent in MrTorrent.Torrents.Torrent,
       where: [id: ^id],
-      preload: [:files, :category]
+      preload: [:files, :category, :tags]
   end
 
   def find_torrent_by_slug_query(slug) do
     from torrent in MrTorrent.Torrents.Torrent,
       where: [slug: ^slug],
-      preload: [:files, :category]
+      preload: [:files, :category, :tags]
   end
 
   def generate_torrent_file(torrent, announce_url, comment) do
@@ -59,7 +65,7 @@ defmodule MrTorrent.Torrents.Torrent do
   def create_changeset(torrent, params, user) do
     changeset =
       torrent
-      |> cast(params, [:description, :category_id])
+      |> cast(params, [:description, :category_id, :tag_names])
       |> put_change(:uploaded_file, params["uploaded_file"])
       |> put_change(:user_id, user.id)
       |> decode_and_validate_file
@@ -76,6 +82,7 @@ defmodule MrTorrent.Torrents.Torrent do
       |> unique_constraint(:info_hash)
       |> unsafe_validate_unique(:slug, MrTorrent.Repo)
       |> unique_constraint(:slug)
+      |> parse_and_set_tags
     else
       changeset
     end
@@ -142,9 +149,27 @@ defmodule MrTorrent.Torrents.Torrent do
     %TorrentFile{size: length, path: path}
   end
 
+  defp parse_and_set_tags(changeset)  do
+    case get_change(changeset, :tag_names) do
+      tag_names when is_binary(tag_names) ->
+        tags =
+          tag_names
+          |> String.split(",", trim: true)
+          |> Enum.map(& String.trim(&1))
+          |> Enum.reject(& &1 == "")
+          |> MrTorrent.Torrents.insert_and_get_all_tags()
+
+        put_assoc(changeset, :tags, tags)
+
+      _ ->
+        changeset
+    end
+  end
+
   defp add_slug(changeset) do
     slug =
-      get_change(changeset, :name)
+      changeset
+      |> get_change(:name)
       |> String.normalize(:nfd)
       |> String.replace(~r/[^a-z0-9\(\)\[\]\._-]+/i, "-")
 
