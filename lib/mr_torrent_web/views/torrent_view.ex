@@ -22,7 +22,7 @@ defmodule MrTorrentWeb.TorrentView do
   def tag_list(conn, tags) do
     content_tag(:ul, class: "tag-list") do
       Enum.map(tags, fn tag ->
-        color = StringColorHelper.color_from_string(tag.name)
+        color = StringColorHelper.hsl_color_from_string(tag.name)
 
         content_tag(
           :li,
