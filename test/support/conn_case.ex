@@ -46,6 +46,11 @@ defmodule MrTorrentWeb.ConnCase do
     %{conn: login_user(conn, user), user: user}
   end
 
+  def register_and_login_admin(%{conn: conn}) do
+    user = MrTorrent.AccountsFixtures.admin_user_fixture()
+    %{conn: login_user(conn, user), user: user}
+  end
+
   def login_user(conn, user) do
     token = MrTorrent.Accounts.create_user_session(user)
 

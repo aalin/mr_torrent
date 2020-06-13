@@ -30,6 +30,19 @@ defmodule MrTorrentWeb.UserAuth do
     end
   end
 
+  def require_admin_user(conn, _opts) do
+    user = conn.assigns[:current_user]
+
+    if user && user.admin do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You are not an admin. This incident has been reported.")
+      |> redirect(to: Routes.torrent_path(conn, :index))
+      |> halt()
+    end
+  end
+
   def require_authenticated_user(conn, _opts) do
     if conn.assigns[:current_user] do
       conn

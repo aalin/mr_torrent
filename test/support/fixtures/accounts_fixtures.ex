@@ -17,4 +17,18 @@ defmodule MrTorrent.AccountsFixtures do
 
     user
   end
+
+  def admin_user_fixture(attrs \\ %{}) do
+    {:ok, user} =
+      MrTorrent.Accounts.User.update_changeset(
+        %MrTorrent.Accounts.User{admin: true},
+        %{
+          username: unique_username(),
+          email: unique_user_email(),
+          password: valid_user_password()
+        }
+      ) |> MrTorrent.Repo.insert()
+
+    user
+  end
 end

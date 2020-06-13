@@ -13,7 +13,7 @@
 IO.puts("Creating default user")
 
 MrTorrent.Accounts.User.update_changeset(
-  %MrTorrent.Accounts.User{},
+  %MrTorrent.Accounts.User{admin: true},
   %{
     username: "admin",
     email: "admin@localhost",

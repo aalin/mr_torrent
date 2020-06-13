@@ -46,7 +46,10 @@ defmodule MrTorrentWeb.SessionControllerTest do
 
   describe "delete user_session" do
     test "logs the user out ", %{conn: conn, user: user} do
-      conn = conn |> login_user(user) |> delete(Routes.session_path(conn, :delete))
+      conn =
+        conn
+        |> login_user(user)
+        |> delete(Routes.session_path(conn, :delete))
 
       assert redirected_to(conn) == "/"
       refute get_session(conn, :user_token)

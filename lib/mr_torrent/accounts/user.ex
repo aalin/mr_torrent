@@ -8,6 +8,7 @@ defmodule MrTorrent.Accounts.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :confirmed_at, :naive_datetime
+    field :admin, :boolean, default: false
     timestamps()
   end
 
