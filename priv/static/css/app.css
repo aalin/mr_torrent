@@ -127,16 +127,21 @@ dt {
 
 .pagination li {
   display: inline-block;
-  border: 1px solid var(--border-color);
   margin: .5em;
 }
 
 .pagination li a,
 .pagination li span {
   display: inline-block;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
   min-width: 2em;
   text-align: center;
   padding: .5em;
+}
+
+.pagination li span {
+  opacity: .5;
 }
 
 .pagination li.active {
@@ -236,9 +241,10 @@ td.download-column a:hover {
   font-weight: bold;
   color: #fff;
   text-shadow:
-    0 0 1px #000,
-    0 0 1px #000,
-    0 0 1px #000;
-  border: 1px solid #000;
-  border-radius: 3px;
+    0 0 .5px #000,
+    0 0 .5px #000,
+    0 0 .5px #000,
+    0 0 .5px #000;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
 }
