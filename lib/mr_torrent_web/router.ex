@@ -52,6 +52,7 @@ defmodule MrTorrentWeb.Router do
 
     get "/", Admin.DashboardController, :index
     get "/users", Admin.UserController, :index
+    get "/categories", Admin.CategoryController, :index
   end
 
   scope "/", MrTorrentWeb do

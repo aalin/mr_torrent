@@ -135,8 +135,12 @@ defmodule MrTorrent.Torrents do
 
   alias MrTorrent.Torrents.Category
 
+  def list_categories do
+    Repo.all(Category)
+  end
+
   def category_tree do
-    build_category_tree(Repo.all(Category), %{id: nil})
+    build_category_tree(list_categories(), %{id: nil})
   end
 
   defp build_category_tree(categories, category) do
