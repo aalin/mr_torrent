@@ -42,6 +42,7 @@ defmodule MrTorrentWeb.Router do
     pipe_through [:browser, :require_authenticated_user, :require_admin_user]
 
     get "/", Admin.DashboardController, :index
+    get "/users", Admin.UserController, :index
   end
 
   scope "/", MrTorrentWeb do

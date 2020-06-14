@@ -13,6 +13,10 @@ defmodule MrTorrent.Accounts do
     Repo.all(User)
   end
 
+  def paginate_users(params) do
+    MrTorrent.Paginator.paginate(User, params["page"])
+  end
+
   def get_user!(id), do: Repo.get!(User, id)
 
   def get_user_by_username_and_password(username, password)

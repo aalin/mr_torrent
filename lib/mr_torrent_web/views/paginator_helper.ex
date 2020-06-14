@@ -11,6 +11,7 @@ defmodule MrTorrentWeb.PaginatorHelper do
   def render(conn, data, opts \\ []) do
     window_size = Keyword.get(opts, :window_size, @default_window_size)
     class = Keyword.get(opts, :class)
+    name = Keyword.get(opts, :name, "results")
 
     prev = prev_button(conn, data)
     pages = page_buttons(conn, data, window_size)
@@ -18,20 +19,20 @@ defmodule MrTorrentWeb.PaginatorHelper do
 
     content_tag(:div, class: class) do
       [
-        description(data),
+        description(data, name),
         content_tag(:ul, [prev, pages, next])
       ]
     end
   end
 
-  defp description(data) do
+  defp description(data, name) do
     first = (data.current_page - 1) * data.results_per_page + 1
     last = min(data.current_page * data.results_per_page, data.total_results)
 
     content_tag(:p, [
       content_tag(:strong, "#{format_number(first)} – #{format_number(last)}"),
       " of total ",
-      content_tag(:strong, "#{format_number(data.total_results)} torrents")
+      content_tag(:strong, "#{format_number(data.total_results)} #{name}")
     ])
   end
 

@@ -55,4 +55,4 @@
   </tbody>
 </table>
 
-<%= MrTorrentWeb.PaginatorHelper.render(@conn, @torrents, class: "pagination") %>
+<%= MrTorrentWeb.PaginatorHelper.render(@conn, @torrents, class: "pagination", name: "torrents") %>
