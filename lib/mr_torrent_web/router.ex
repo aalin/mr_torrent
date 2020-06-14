@@ -20,6 +20,10 @@ defmodule MrTorrentWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :admin do
+    plug :put_layout, {MrTorrentWeb.Admin.LayoutView, "app.html"}
+  end
+
   scope "/", MrTorrentWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
@@ -38,8 +42,13 @@ defmodule MrTorrentWeb.Router do
     post "/torrents", TorrentController, :create
   end
 
-  scope "/admin", MrTorrentWeb do
-    pipe_through [:browser, :require_authenticated_user, :require_admin_user]
+  scope "/admin", MrTorrentWeb, as: :admin do
+    pipe_through [
+      :browser,
+      :require_authenticated_user,
+      :require_admin_user,
+      :admin
+    ]
 
     get "/", Admin.DashboardController, :index
     get "/users", Admin.UserController, :index

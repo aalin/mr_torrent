@@ -1,0 +1,7 @@
+<ul>
+  <li>Logged in as <%= @current_user.username %></li>
+  <li><%= link "Browse torrents", to: Routes.torrent_path(@conn, :index) %></li>
+  <li><%= link "Dashboard", to: Routes.admin_dashboard_path(@conn, :index) %></li>
+  <li><%= link "Users", to: Routes.admin_user_path(@conn, :index) %></li>
+  <li><%= link "Logout", to: Routes.session_path(@conn, :delete), method: :delete %></li>
+</ul>

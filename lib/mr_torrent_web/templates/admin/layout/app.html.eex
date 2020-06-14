@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= if @current_user do %>
+      <%= tag :meta, name: "socket_token", content: Phoenix.Token.sign(@conn, "user auth", @current_user.id) %>
+    <% end %>
+    <title>MrTorrent Admin</title>
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/phoenix.js") %>"></script>
+    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/phoenix_html.js") %>"></script>
+    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  </head>
+  <body>
+    <header>
+      <h1>MrTorrent Admin</h1>
+      <nav>
+        <%= render "_menu.html", assigns %>
+      </nav>
+      <hr>
+    </header>
+    <main role="main" class="container">
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= @inner_content %>
+    </main>
+    <footer>
+      <hr>
+      <p>
+        MrTorrent v<%= app_version() %>
+        <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+          (<%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %>)
+        <% end %>
+      </p>
+    </footer>
+  </body>
+</html>
