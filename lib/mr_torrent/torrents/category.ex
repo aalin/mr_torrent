@@ -10,6 +10,10 @@ defmodule MrTorrent.Torrents.Category do
     timestamps()
   end
 
+  def new_changeset(category, attrs \\ %{}) do
+    change(category, attrs)
+  end
+
   @doc false
   def changeset(category, attrs) do
     category

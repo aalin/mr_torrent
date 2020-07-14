@@ -5,3 +5,5 @@
     <li><%= category.name %></li>
   <% end %>
 </ul>
+
+<%= render "form.html", assigns %>

@@ -191,18 +191,10 @@ defmodule MrTorrent.Torrents do
   """
   def get_category!(id), do: Repo.get!(Category, id)
 
-  @doc """
-  Creates a category.
+  def new_category() do
+    Category.new_changeset(%Category{})
+  end
 
-  ## Examples
-
-      iex> create_category(%{field: value})
-      {:ok, %Category{}}
-
-      iex> create_category(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   def create_category(attrs \\ %{}) do
     %Category{}
     |> Category.changeset(attrs)
