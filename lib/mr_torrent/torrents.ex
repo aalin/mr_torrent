@@ -5,6 +5,7 @@ defmodule MrTorrent.Torrents do
   alias MrTorrent.Torrents.Access
   alias MrTorrent.Torrents.Announcement
   alias MrTorrent.Torrents.Filter
+  alias MrTorrent.Torrents.Tag
   alias MrTorrent.Peerlist
 
   def list_torrents do
@@ -236,6 +237,10 @@ defmodule MrTorrent.Torrents do
     Category.changeset(category, attrs)
   end
 
+  def list_tags_with_counts() do
+    Repo.all(Tag.get_all_with_counts_query)
+  end
+
   def insert_and_get_all_tags([]) do
     []
   end
@@ -252,7 +257,7 @@ defmodule MrTorrent.Torrents do
 
     maps = Enum.map(names, &Map.put(timestamps, :name, &1))
 
-    Repo.insert_all(MrTorrent.Torrents.Tag, maps, on_conflict: :nothing)
-    Repo.all(MrTorrent.Torrents.Tag.get_all_query(names))
+    Repo.insert_all(Tag, maps, on_conflict: :nothing)
+    Repo.all(Tag.get_all_query(names))
   end
 end

@@ -6,6 +6,11 @@ defmodule MrTorrent.Torrents.Tag do
   schema "tags" do
     field :name, :string
 
+    field :torrents_count, :integer, virtual: true
+
+    many_to_many :torrents, MrTorrent.Torrents.Torrent,
+      join_through: MrTorrent.Torrents.TorrentTag
+
     timestamps()
   end
 
@@ -26,5 +31,13 @@ defmodule MrTorrent.Torrents.Tag do
   def get_all_query(names) do
     from t in MrTorrent.Torrents.Tag,
       where: t.name in ^names
+  end
+
+  def get_all_with_counts_query do
+    from tag in MrTorrent.Torrents.Tag,
+      left_join: torrents in assoc(tag, :torrents),
+      group_by: tag.id,
+      select_merge: %{:torrents_count => count(torrents)},
+      order_by: [desc: count(torrents)]
   end
 end

@@ -1,0 +1,7 @@
+<h2>Tags</h2>
+
+<ul>
+  <%= for tag <- @tags do %>
+    <li><%= tag.name %> (<%= tag.torrents_count %> torrents)</li>
+  <% end %>
+</ul>

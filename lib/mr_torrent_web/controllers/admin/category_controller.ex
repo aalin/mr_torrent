@@ -1,5 +1,5 @@
-  defmodule MrTorrentWeb.Admin.CategoryController do
-    use MrTorrentWeb, :controller
+defmodule MrTorrentWeb.Admin.CategoryController do
+  use MrTorrentWeb, :controller
 
   alias MrTorrent.Torrents
 
