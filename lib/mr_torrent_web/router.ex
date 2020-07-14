@@ -55,6 +55,8 @@ defmodule MrTorrentWeb.Router do
 
     get "/categories", Admin.CategoryController, :index
     post "/categories", Admin.CategoryController, :create
+    get "/categories/:id", Admin.CategoryController, :edit
+    put "/categories/:id", Admin.CategoryController, :update
   end
 
   scope "/", MrTorrentWeb do

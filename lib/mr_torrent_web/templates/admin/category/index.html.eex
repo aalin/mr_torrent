@@ -2,8 +2,11 @@
 
 <ul>
   <%= for category <- @categories do %>
-    <li><%= category.name %></li>
+    <li><%= category.name %> <%= link "Edit", to: Routes.admin_category_path(@conn, :edit, category) %></li>
   <% end %>
 </ul>
 
-<%= render "form.html", assigns %>
+<fieldset>
+  <legend>New category</legend>
+  <%= render "form.html", Map.put(assigns, :action, Routes.admin_category_path(@conn, :create)) %>
+</fieldset>

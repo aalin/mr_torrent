@@ -191,8 +191,8 @@ defmodule MrTorrent.Torrents do
   """
   def get_category!(id), do: Repo.get!(Category, id)
 
-  def new_category() do
-    Category.new_changeset(%Category{})
+  def category_changeset(category \\ %Category{}) do
+    Category.new_changeset(category)
   end
 
   def create_category(attrs \\ %{}) do

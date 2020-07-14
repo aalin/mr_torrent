@@ -23,4 +23,24 @@ defmodule MrTorrentWeb.Admin.CategoryControllerTest do
       assert html_response(conn, 200) =~ "<li>name can&#39;t be blank</li>"
     end
   end
+
+  describe "PUT /:id" do
+    @valid_params %{"category" => %{"name" => "new category"}}
+    @invalid_params %{"category" => %{"name" => ""}}
+
+    setup do
+      %{category: category_fixture()}
+    end
+
+    test "with valid params", %{conn: conn, category: category} do
+      conn = put(conn, Routes.admin_category_path(conn, :update, category), @valid_params)
+      assert get_flash(conn, :info) == "Category created successfully"
+      assert redirected_to(conn) == Routes.admin_category_path(conn, :index)
+    end
+
+    test "with invalid params", %{conn: conn, category: category} do
+      conn = put(conn, Routes.admin_category_path(conn, :update, category), @invalid_params)
+      assert html_response(conn, 200) =~ "<li>name can&#39;t be blank</li>"
+    end
+  end
 end
