@@ -25,6 +25,8 @@ defmodule MrTorrentWeb.Admin.CategoryControllerTest do
   end
 
   describe "PUT /:id" do
+    import MrTorrent.TorrentsFixtures
+
     @valid_params %{"category" => %{"name" => "new category"}}
     @invalid_params %{"category" => %{"name" => ""}}
 
@@ -34,7 +36,7 @@ defmodule MrTorrentWeb.Admin.CategoryControllerTest do
 
     test "with valid params", %{conn: conn, category: category} do
       conn = put(conn, Routes.admin_category_path(conn, :update, category), @valid_params)
-      assert get_flash(conn, :info) == "Category created successfully"
+      assert get_flash(conn, :info) == "Category updated successfully"
       assert redirected_to(conn) == Routes.admin_category_path(conn, :index)
     end
 
