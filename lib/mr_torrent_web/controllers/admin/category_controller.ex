@@ -4,8 +4,8 @@ defmodule MrTorrentWeb.Admin.CategoryController do
   alias MrTorrent.Torrents
 
   def index(conn, _params) do
-    categories = Torrents.list_categories
-    changeset = Torrents.category_changeset
+    categories = Torrents.list_categories()
+    changeset = Torrents.category_changeset()
     render(conn, "index.html", categories: categories, changeset: changeset)
   end
 
@@ -17,7 +17,7 @@ defmodule MrTorrentWeb.Admin.CategoryController do
         |> redirect(to: Routes.admin_category_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        categories = Torrents.list_categories
+        categories = Torrents.list_categories()
         render(conn, "index.html", categories: categories, changeset: changeset)
     end
   end

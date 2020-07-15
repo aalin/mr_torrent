@@ -149,14 +149,14 @@ defmodule MrTorrent.Torrents.Torrent do
     %TorrentFile{size: length, path: path}
   end
 
-  defp parse_and_set_tags(changeset)  do
+  defp parse_and_set_tags(changeset) do
     case get_change(changeset, :tag_names) do
       tag_names when is_binary(tag_names) ->
         tags =
           tag_names
           |> String.split(",", trim: true)
-          |> Enum.map(& String.trim(&1))
-          |> Enum.reject(& &1 == "")
+          |> Enum.map(&String.trim(&1))
+          |> Enum.reject(&(&1 == ""))
           |> MrTorrent.Torrents.insert_and_get_all_tags()
 
         put_assoc(changeset, :tags, tags)

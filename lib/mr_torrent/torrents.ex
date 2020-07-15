@@ -238,7 +238,7 @@ defmodule MrTorrent.Torrents do
   end
 
   def list_tags_with_counts() do
-    Repo.all(Tag.get_all_with_counts_query)
+    Repo.all(Tag.get_all_with_counts_query())
   end
 
   def insert_and_get_all_tags([]) do
@@ -247,7 +247,7 @@ defmodule MrTorrent.Torrents do
 
   def insert_and_get_all_tags(names) do
     now =
-      NaiveDateTime.utc_now
+      NaiveDateTime.utc_now()
       |> NaiveDateTime.truncate(:second)
 
     timestamps = %{

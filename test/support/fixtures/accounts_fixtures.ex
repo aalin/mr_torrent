@@ -27,7 +27,8 @@ defmodule MrTorrent.AccountsFixtures do
           email: unique_user_email(),
           password: valid_user_password()
         }
-      ) |> MrTorrent.Repo.insert()
+      )
+      |> MrTorrent.Repo.insert()
 
     user
   end

@@ -19,7 +19,8 @@ defmodule MrTorrentWeb.TorrentViewTest do
         |> TorrentView.download_torrent_link(torrent)
         |> safe_to_string()
 
-      assert link == "<a download=\"\" href=\"/download/Test_torrent\" title=\"Download .torrent\">Download</a>"
+      assert link ==
+               "<a download=\"\" href=\"/download/Test_torrent\" title=\"Download .torrent\">Download</a>"
     end
 
     test "creates a download link with custom text", %{conn: conn, torrent: torrent} do
@@ -28,7 +29,8 @@ defmodule MrTorrentWeb.TorrentViewTest do
         |> TorrentView.download_torrent_link(torrent, "Download torrent")
         |> safe_to_string()
 
-      assert link == "<a download=\"\" href=\"/download/Test_torrent\" title=\"Download .torrent\">Download torrent</a>"
+      assert link ==
+               "<a download=\"\" href=\"/download/Test_torrent\" title=\"Download .torrent\">Download torrent</a>"
     end
 
     test "creates a download link with custom title", %{conn: conn, torrent: torrent} do
@@ -37,7 +39,8 @@ defmodule MrTorrentWeb.TorrentViewTest do
         |> TorrentView.download_torrent_link(torrent, "Download torrent", title: "Download")
         |> safe_to_string()
 
-      assert link == "<a download=\"\" href=\"/download/Test_torrent\" title=\"Download\">Download torrent</a>"
+      assert link ==
+               "<a download=\"\" href=\"/download/Test_torrent\" title=\"Download\">Download torrent</a>"
     end
   end
 end

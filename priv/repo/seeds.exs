@@ -24,5 +24,5 @@ MrTorrent.Accounts.User.update_changeset(
 
 ["Movies", "TV-Shows", "Music", "Books", "Applications", "Games", "Other"]
 |> Enum.each(fn name ->
-     MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: name})
-   end)
+  MrTorrent.Repo.insert!(%MrTorrent.Torrents.Category{name: name})
+end)

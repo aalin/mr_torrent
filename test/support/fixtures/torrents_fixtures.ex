@@ -16,8 +16,13 @@ defmodule MrTorrent.TorrentsFixtures do
     ("category_" <> :crypto.strong_rand_bytes(5)) |> Base.encode16()
   end
 
-  def valid_torrent_upload, do: plug_upload("test/support/fixtures/debian-10.4.0-amd64-netinst.iso.torrent")
-  def valid_multifile_torrent_upload, do: plug_upload("test/support/fixtures/gd1967-07-23.aud.sorochty.125462.flac16_archive.torrent")
+  def valid_torrent_upload,
+    do: plug_upload("test/support/fixtures/debian-10.4.0-amd64-netinst.iso.torrent")
+
+  def valid_multifile_torrent_upload,
+    do:
+      plug_upload("test/support/fixtures/gd1967-07-23.aud.sorochty.125462.flac16_archive.torrent")
+
   def invalid_torrent_upload, do: plug_upload("test/support/fixtures/invalid.torrent")
   def empty_torrent_upload, do: plug_upload("test/support/fixtures/empty.torrent")
 

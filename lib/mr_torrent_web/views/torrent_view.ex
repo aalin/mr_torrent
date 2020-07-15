@@ -24,7 +24,11 @@ defmodule MrTorrentWeb.TorrentView do
       Enum.map(tags, fn tag ->
         content_tag(:li) do
           color = StringColorHelper.hsl_color_from_string(tag.name)
-          link(tag.name, to: Routes.torrent_path(conn, :index, tag: tag.name), style: "background: #{color};")
+
+          link(tag.name,
+            to: Routes.torrent_path(conn, :index, tag: tag.name),
+            style: "background: #{color};"
+          )
         end
       end)
     end
