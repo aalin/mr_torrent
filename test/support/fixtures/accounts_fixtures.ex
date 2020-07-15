@@ -7,8 +7,7 @@ defmodule MrTorrent.AccountsFixtures do
 
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
-      attrs
-      |> Enum.into(%{
+      Enum.into(attrs, %{
         username: unique_username(),
         email: unique_user_email(),
         password: valid_user_password()
@@ -22,12 +21,12 @@ defmodule MrTorrent.AccountsFixtures do
     {:ok, user} =
       MrTorrent.Accounts.User.update_changeset(
         %MrTorrent.Accounts.User{admin: true},
-        %{
+        Enum.into(attrs, %{
           username: unique_username(),
           email: unique_user_email(),
           password: valid_user_password()
         }
-      )
+      ))
       |> MrTorrent.Repo.insert()
 
     user

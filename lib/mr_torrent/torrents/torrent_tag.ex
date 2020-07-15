@@ -1,6 +1,5 @@
 defmodule MrTorrent.Torrents.TorrentTag do
   use Ecto.Schema
-  import Ecto.Changeset
 
   schema "torrent_tags" do
     belongs_to :torrent, MrTorrent.Torrents.Torrent

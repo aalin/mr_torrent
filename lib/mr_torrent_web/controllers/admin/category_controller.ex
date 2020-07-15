@@ -11,7 +11,7 @@ defmodule MrTorrentWeb.Admin.CategoryController do
 
   def create(conn, params) do
     case Torrents.create_category(params["category"]) do
-      {:ok, category} ->
+      {:ok, _category} ->
         conn
         |> put_flash(:info, "Category created successfully")
         |> redirect(to: Routes.admin_category_path(conn, :index))
@@ -22,7 +22,7 @@ defmodule MrTorrentWeb.Admin.CategoryController do
     end
   end
 
-  def edit(conn, %{"id" => id} = params) do
+  def edit(conn, %{"id" => id}) do
     category = Torrents.get_category!(id)
     changeset = Torrents.category_changeset(category)
 
@@ -33,7 +33,7 @@ defmodule MrTorrentWeb.Admin.CategoryController do
     category = Torrents.get_category!(id)
 
     case Torrents.update_category(category, params["category"]) do
-      {:ok, category} ->
+      {:ok, _category} ->
         conn
         |> put_flash(:info, "Category updated successfully")
         |> redirect(to: Routes.admin_category_path(conn, :index))
